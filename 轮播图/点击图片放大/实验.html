@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        div {
+            width: 500px;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            line-height: 200px;
+        }
+
+        img {
+            position: absolute;
+            /*left: 50%;*/
+            /*top: 50%;*/
+        }
+    </style>
+    <script src="jquery-1.11.1.js"></script>
+    <script>
+        $(function () {
+
+
+            $("img").mouseenter(function () {
+                getBig($("img"),true)
+
+            })
+            $("img").mouseleave(function () {
+                getBig($("img"),false)
+
+            })
+            //ele为图片的 jQuery对象，bool 为true 为放大    false为缩小
+            //图片和父盒子必须有定位，父盒子大小固定，不能靠图片撑开
+            function getBig(ele,bool) {
+                var imgW = parseInt(ele.parent().css("width"));
+                var imgH = parseInt(ele.parent().css("height"));
+
+                if(bool){
+                    var josn = {
+                        "width": imgW * 11 / 10,
+                        "height": imgH * 11 / 10,
+                        "top": -imgH / 20,
+                        "left": -imgW / 20}
+
+
+                    ele.stop().animate(josn, 1000)
+                }else{
+                    var josn1 = {"width": imgW, "height":imgH, "top": 0, "left": 0}
+                    ele.stop().animate(josn1, 1000)
+                }
+
+           }
+        })
+
+
+    </script>
+</head>
+<body>
+<div><img src="images/1.jpg" alt=""/></div>
+</body>
+</html>

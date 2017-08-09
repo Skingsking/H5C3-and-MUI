@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .box{
+            width: 500px;
+            height: 500px;
+            margin: 100px auto;
+            border: 1px solid #000;
+        }
+        .box1,.box2,.box3{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+
+        }
+        .box1{
+            /*缩放*/
+            transform: scale(0.5);
+        }
+        .box2{
+            /*位移 能移动盒子  X Y轴 也能移动*/
+           transform: translate(100px);
+        }
+        .box3{
+            /*旋转 也能随X y*/
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+        <div class="box1"></div>
+        <div class="box2"></div>
+        <div class="box3"></div>
+</div>
+</body>
+</html>

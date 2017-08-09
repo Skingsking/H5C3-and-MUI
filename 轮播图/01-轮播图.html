@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{ padding:0; margin:0; list-style:none; border:0;}
+        .all{
+            width:500px;
+            height:200px;
+            padding:7px;
+            border:1px solid #ccc;
+            margin:100px auto;
+            position:relative;
+        }
+        .screen{
+            width:500px;
+            height:200px;
+            overflow:hidden;
+            position:relative;
+        }
+       /* .screen li{
+            width:500px;
+            height:200px;
+            overflow:hidden;
+            float:left;
+        }*/
+        .screen ul{
+            position:absolute;
+            left:0;
+            top:0px;
+            width:3000px;
+        }
+
+        .screen li{
+            width: 500px;
+            height: 200px;
+            overflow: hidden;
+            float: left;
+        }
+        .all ol{
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            line-height: 20px;
+            text-align: center;
+        }
+        .all ol li{
+            width: 20px;
+            height: 20px;
+            background: blueviolet;
+            margin-left: 10px;
+            border: 1px solid #000;
+            cursor:pointer;
+        }
+        .all ol li.current{
+            background:yellow;
+        }
+        #arr{
+            display: none;
+        }
+        #arr span{
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            top:50%;
+            margin-top:-20px;
+            background:#000;
+            cursor:pointer;
+            line-height:40px;
+            text-align:center;
+            font-weight:bold;
+            font-family:'黑体';
+            font-size:30px;
+            color:#fff;
+            opacity:0.3;
+            border:1px solid #fff;
+        }
+        #arr #right{
+            right:5px;
+            left:auto;}
+
+
+
+
+    </style>
+</head>
+<body>
+        <div class="all" id='all'>
+            <div class="screen" id="screen">
+                <ul id="ul">
+                    <li><img src="images3/1.jpg" width="500" height="200" /></li>
+                    <li><img src="images3/2.jpg" width="500" height="200" /></li>
+                    <li><img src="images3/3.jpg" width="500" height="200" /></li>
+                    <li><img src="images3/4.jpg" width="500" height="200" /></li>
+                    <li><img src="images3/5.jpg" width="500" height="200" /></li>
+                </ul>
+                <ol>
+
+                </ol>
+                <div id="arr">
+                    <span id="left"><</span>
+                    <span id="right">></span>
+                </div>
+            </div>
+        </div>
+        <script>
+                //1 获取事件源
+                //2 复制第一张ul到最后一张
+                //3 创建ol里面的li标签 并且点亮第一个
+                //4 排他思想点亮所有的ol li标签
+                //5 创建定时器 鼠标在显示 拿走不显示 还要停止定时器
+                //6 左右切换
+                var all=document.getElementById("all");
+                var screen=document.getElementById("screen");
+                var imgwidth=screen.offsetWidth;
+                var ul=document.getElementById("ul");
+                var ol=screen.children[1];
+                var arr=document.getElementById("arr");
+                var spanArr=arr.children;
+
+                //2 复制第一张ul到最后一张
+                var ulnew=ul.children[0].cloneNode(true);//深层复制
+                ul.appendChild(ulnew);
+
+                //3 创建ol里面的li标签 并且点亮第一个 获取的为ul children -1
+                for(var i=0;i<ul.children.length-1;i++){
+                    //创建一个li
+                    var linew=document.createElement("li");//创建
+                    linew.innerHTML=i+1;
+                    ol.appendChild(linew);
+                }
+                    //点亮第一个
+                    var liArr=ol.children;
+                    liArr[0].className="current";
+
+                //4 排他思想点亮所有的ol li标签
+                for(var i=0;i<liArr.length;i++){
+                    //创建一个索引值
+                    liArr[i].index=i;
+                    liArr[i].onmouseover=function(){
+                        for(var j=0;j<liArr.length;j++){
+                            liArr[j].className="";
+                        }
+                            this.className="current";
+                            //运用包装函数
+                            animate(ul,-this.index*imgwidth);
+                        //鼠标放到小的方块上的时候索引值和key以及square同步
+                            key=quarry=this.index;
+                    }
+                }
+
+                //5 创建定时器 鼠标在显示 拿走不显示 还要停止定时器
+                //创建两个值 一个代表图片 一个代表小方块
+                var timer=setInterval(autoplay,1000);
+                var key=0;
+                var quarry=0;
+
+                function autoplay() {
+                    key++;
+                    if (key > liArr.length) {
+                        ul.style.left = 0;
+                        key = 1;
+                    }
+                    animate(ul, -key * imgwidth);
+
+                    quarry++;
+                    if (quarry > liArr.length - 1) {
+                        quarry = 0; //索引值不能大于5
+                    }
+                    for (var j = 0; j < liArr.length; j++) {
+                        liArr[j].className = "";
+                    }
+                    liArr[quarry].className = "current";
+                }
+                    //鼠标在显示 拿走不显示 还要停止定时器
+                    all.onmouseover = function () {
+                        arr.style.display = "block";
+                        clearInterval(timer);//清除
+                    }
+                    all.onmouseout=function(){
+                        arr.style.display="none";
+                        timer=setInterval(autoplay,1000);//开启
+                    }
+
+
+                //6 左右切换
+                spanArr[0].onclick= function () {
+                    key--;
+                    if(key<0){
+                        ul.style.left=-imgwidth*(liArr.length)+"px";//跳转到最后一张
+                        key=liArr.length-1;
+                    }
+                    animate(ul,-key*imgwidth);
+
+                    quarry--;
+                    if(quarry<0){
+                        quarry=liArr.length-1;
+                    }
+                    for (var j = 0; j < liArr.length; j++) {
+                        liArr[j].className = "";
+                    }
+                    liArr[quarry].className = "current";
+
+
+                }
+
+
+
+
+
+                spanArr[1].onclick=function(){
+                    autoplay();
+                }
+
+
+
+
+                function animate(ele,target){
+                    //动画封装 因为用到定时器所以先要清除定时器
+                    clearInterval(ele.timer);
+                    //要比对项目值和移动值大小 去正负
+                    var std=target>ele.offsetLeft?10:-10;
+                    ele.timer=setInterval(function(){
+                        ele.style.left=ele.offsetLeft+std+"px";
+                        //在判断如果移动完事之后 步数等于或者大于项目值 则直接闪动
+                        var val=target-ele.offsetLeft;
+                        if(Math.abs(val)<=Math.abs(std)){//因为要取绝对值 用Math
+                            //闪动
+                            ele.style.left=target+"px";
+                            //再次清除定时器
+                            clearInterval(ele.timer)
+                        }
+                    },10)
+                }
+
+        </script>
+</body>
+</html>
