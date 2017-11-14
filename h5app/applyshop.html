@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>申请开店</title>
+
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style='height: 35px;background: #BBBBBB;'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id='fanhuianqi' style='color:#777;bottom: 5px;'></a>
+			<h1 id="title" class="mui-title" style='line-height: 35px;font-size: 16px;'>申请开店</h1>
+		</header>
+		<div id='apply-s' class='mui-content '>
+			<div id='ui-boxgeren' style='width: 80%;border: 1px solid #ccc;margin: 0 auto;margin-top: 40px;'>
+				<div class='ui-imggeren' style='text-align: center;margin-top: 20px;'>
+					<img src="./images/geren.jpg" alt="" style='border-radius: 50%;width: 20%;margin: 0 auto;display: inline-block;' />
+				</div>
+				<h5 style='text-align: center;color: #000;'>个人店铺</h5>
+				<div class='kadxgeren' style='text-align: center;'>
+					<p>1.免费快速开店</p>
+					<p>2.免费发布商品</p>
+					<p>3.免费装修店铺</p>
+				</div>
+
+			</div>
+
+			<div id='ui-boxqiye' style='width: 80%;border: 1px solid #ccc;margin: 0 auto;margin-top: 40px;'>
+				<div class='ui-imgqiye' style='text-align: center;margin-top: 20px;'>
+					<img src="./images/qiye.jpg" alt="" style='border-radius: 50%;width: 20%;margin: 0 auto;display: inline-block;' />
+				</div>
+				<h5 style='text-align: center;color: #000;'>企业店铺</h5>
+				<div class='kadxqiye' style='text-align: center;'>
+					<p>1.企业店铺认证标志</p>
+					<p>2.采购交易优先推荐</p>
+					<p>3.买家搜索排名优先</p>
+					<p>4.首页广告位优先展示</p>
+				</div>
+
+			</div>
+
+			<div class="btn-div" style="width: 100%;">
+				<div class="" style="font-size: 16px;width: 80%;margin:auto;text-align: center;">
+					我已阅读并同意
+					<span class="font-orange" id="huiyuan">《会员注册协议》</span>
+				</div>
+			</div>
+
+		</div>
+
+	</body>
+
+	<script src="js/mui.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+
+	<script>
+		mui.init({
+			swipeBack: false //启用右滑关闭功能
+		});
+
+		//token值
+		function getUrlParam(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r != null) {
+				return unescape(r[2]);
+
+			} else {
+				return null;
+			}
+		}
+		//获取url传入的值
+		var accessToken = getUrlParam('accessToken');
+		if(accessToken == "" || accessToken == undefined || accessToken == null) {
+			mui.toast("系统跑路咯");
+
+		} else {
+
+		}
+
+		//跳转会员登录页面
+		document.getElementById('huiyuan').addEventListener('tap', function() {
+			mui.openWindow({
+
+				url: 'member.html?accessToken=' + accessToken,
+
+				id: 'member.html',
+
+			});
+
+		});
+
+		document.getElementById('ui-boxgeren').addEventListener('tap', function() {
+
+			mui.ajax('/index.php/topapi', {
+				data: {
+					format: 'json',
+					v: 'v1',
+					method: 'shop.shop.signupSeller',
+					//accessToken: 'bed84ba58d1b4ebaa926a408149c0d1698b6809059ba915801a4c8e8224fdd07',
+					accessToken: accessToken,
+					user_type: '0',
+					license: 'on',
+
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 10000, //超时时间设置为10秒；				
+				success: function(data) {
+					if(data.errorcode != 0) {
+						// 出错
+						mui.toast(data.msg);
+					} else {
+
+						// 正常
+						mui.openWindow({
+							url: 'personal.html?accessToken=' + accessToken,
+							id: 'personal.html',
+
+						});
+
+					}
+				},
+				error: function(res) {
+					mui.toast("网络出错,请重试");
+				},
+
+			});
+
+		});
+
+		document.getElementById('ui-boxqiye').addEventListener('tap', function() {
+
+			mui.ajax('/index.php/topapi', {
+				data: {
+					format: 'json',
+					v: 'v1',
+					method: 'shop.shop.signupSeller',
+					//accessToken: 'bed84ba58d1b4ebaa926a408149c0d1698b6809059ba915801a4c8e8224fdd07',
+					accessToken: accessToken,
+					user_type: '0',
+					license: 'on',
+
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 10000, //超时时间设置为10秒；				
+				success: function(data) {
+					if(data.errorcode != 0) {
+						// 出错
+						mui.toast(data.msg);
+					} else {
+
+						// 正常
+						mui.openWindow({
+							url: 'enterprise.html?accessToken=' + accessToken,
+							id: 'enterprise.html',
+
+						});
+
+					}
+				},
+				error: function(res) {
+					mui.toast("网络出错,请重试");
+				},
+
+			});
+
+		});
+		
+	</script>
+
+</html>

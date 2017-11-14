@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>修改订单</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			.mui-control-content {
+				background-color: #efeff4;
+				min-height: 150px;
+			}
+			
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+				color: #000;
+			}
+			
+			.mui-slider .mui-segmented-control.mui-segmented-control-inverted~.mui-slider-group .mui-slider-item {
+				border-bottom: 1px solid #efeff4;
+			}
+			
+			.shopex-table {
+				display: table;
+				table-layout: fixed;
+				width: 120%;
+				padding-right: 1.5rem;
+				border-bottom: 1px solid #D8D8D8;
+			}
+			
+			.checkout-goods-list {
+				margin: 0.5rem;
+				height: 7rem;
+				position: relative;
+				overflow: hidden;
+			}
+			
+			.checkout-goods-list .checkout-goods-warp {
+				width: 120%;
+				height: 7rem;
+				position: absolute;
+				top: 0;
+			}
+			
+			.checkout-goods-list .thumbnail {
+				position: relative;
+				width: 6rem;
+				height: 6rem;
+				float: left;
+				margin-right: 0.5rem;
+			}
+			
+			.checkout-goods-list .thumbnail .thumb-img {
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+			}
+			
+			.function-list .shopex-text-right {
+				font-size: 0.9rem;
+				color: #666;
+			}
+			
+			.shopex-table-cell {
+				vertical-align: middle;
+				display: table-cell;
+			}
+			
+			.shopex-text-right {
+				font-size: 0.9rem;
+				color: #666;
+			}
+			
+			.shopex-col-xs-2 {
+				width: 23%;
+			}
+			
+			.mui-navigate-left:after,
+			.mui-navigate-right:after,
+			.mui-push-left:after,
+			.mui-push-right:after {
+				top: 49%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #666;"></a>
+			<h1 class="mui-title">修改订单</h1>
+
+		</header>
+		<div class="mui-content">
+
+			<div class='shop-xq'>
+
+			</div>
+
+			<div class='goodsreceipt'>
+
+			</div>
+
+			<div class="fabricdisplay">
+				<div class="mui-input-group" class='mui-scroll-wrapper'>
+					<ul class="mui-table-view mui-table-view-chevron" id="culars">
+
+					</ul>
+
+					<div class="purchase-yun" style='width: 75%;height: 30px;margin: 0 auto;margin-top: 1rem;'>
+
+					</div>
+
+					<div class="toal" style="width: 100%;background-color: white;margin-top: 1rem;border-top: 1px solid #eee;">
+
+					</div>
+
+					<input type="submit" value="确定" class="mui-title" style="background: #eee;color: #000;margin:0;" id='submit_btnque'>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery.min.js"></script>
+
+		<script type="text/javascript">
+			mui.init();
+			var upData = null;
+			//接收 订单管理页面传入的 url值
+			function getUrlParam(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) {
+					return unescape(r[2]);
+
+				} else {
+					return null;
+				}
+			}
+			//获取url传入的值
+			var tids = getUrlParam('tid');
+
+			var accessToken = getUrlParam('accessToken');
+
+			if(accessToken == "" || accessToken == undefined || accessToken == null) {
+				mui.toast("系统跑路咯");
+
+			} else {
+
+			}
+			mui.ajax('/index.php/topapi', {
+
+				data: {
+					format: 'json',
+					v: 'v1',
+
+					method: 'shop.trade.modifyPrice',
+					//					accessToken: '0551a8a681b377cb6bb2214e04734bd35247cd5d6aeff0154a8949e7e76f19c3',
+					accessToken: accessToken,
+					shop_id: 2,
+					tid: tids,
+
+				},
+
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+
+				success: function(data) {
+					if(data.errorcode != 0) {
+						// 出错
+						mui.toast(data.msg);
+
+					} else {
+
+						var trade_detail = data.data.trade_detail;
+
+						var cur_symbol = data.data.cur_symbol;
+
+						var order = '<div class="dingdanxiangq" style="position: relative;width: 3rem;height: 4rem;float: left;">'
+						order += '	<div class="pht-xq" style="position: absolute;left: 18px;top: 28px;right: 0;bottom: 0;">'
+
+						order += '	<img src="image/dingdan.png" alt="" style="display: block;width: 100%;height: 100%; " />'
+						order += '	</div>'
+						order += '	</div>'
+
+						order += '	<ul class="order-xq" style="background-color: white;margin-top: 0;border-bottom: 1px solid #777;">'
+
+						order += '<li class="mui-table-view-cell">'
+
+						order += '	<a href="" class="mui-navigate-right">'
+
+						order += '	<div class="dd-xq">'
+						order += '	<p>订单号:<span>' + trade_detail.tid + '</span></p>'
+						order += '	</div>'
+
+						order += '	<p style="text-align: right;margin-right: 20px;">' + trade_detail.status_depict + '</p>'
+
+						order += '	<div class="titme-xq">'
+						order += '	<p>创建时间:<span>' + trade_detail.created_time + '</span></p>'
+						order += '	</div>'
+
+						order += '</a>'
+						order += '</li>'
+						order += '	</ul>';
+
+						$(".shop-xq").append(order);
+
+						//获取 收件人信息  如果为线下自提 显示 线下
+						if(trade_detail.shipping_type !== "xxziti") {
+
+							var addre = '<div class="dizhixinxi" style="position: relative;width: 3rem;height: 4rem;float: left;">'
+							addre += '	<div class="goodsreceipt-xq"style="position: absolute;left: 18px;top: 28px;right: 0;bottom: 0;">'
+
+							addre += '	<img src="image/dizhi.png" alt="" style="display: block;width: 100%;height: 100%; " />'
+							addre += '</div>'
+							addre += '</div>'
+
+							addre += '	<ul class="goodsreceipt-xq" style="background-color: white;margin-top: 0;">'
+
+							addre += '<li class="mui-table-view-cell">'
+
+							addre += '	<a href="javascript:void(0);" class="mui-navigate-right">'
+
+							addre += '	<div class="goodsreceipt-xq">'
+							addre += '	<p>收件人:<span>' + trade_detail.receiver_name + '</span><span style="margin-left: 4rem;">' + trade_detail.receiver_mobile + '</span></p>'
+							addre += '	</div>'
+
+							addre += '<div class="goodsreceipt-xq">'
+							addre += '	<p>收货地址:<span>' + trade_detail.receiver_state + trade_detail.receiver_city + trade_detail.receiver_address + trade_detail.receiver_district + '</span></p>'
+							addre += '	</div>'
+
+							addre += '	</a>'
+							addre += '	</li>'
+							addre += '</ul> ';
+						} else {
+							var addre = '<div class="dizhixinxi" style="position: relative;width: 2rem;height: 3rem;float: left;">'
+							addre += '	<div class="goodsreceipt-xq" style="position: absolute;left: 0;top: 0;right: 0;bottom: 0;">'
+
+							addre += '	<img src="image/dizhi.png" alt="" style="display: block;width: 80%;height: 70%;margin-left: 0.8rem;margin-top: 0.3rem;" />'
+							addre += '</div>'
+							addre += '</div>'
+
+							addre += '	<ul class="goodsreceipt-xq" style="background-color: white;margin-top: 0;">'
+
+							addre += '	<li class="mui-table-view-cell">'
+							addre += '	<p>线下自提</p>'
+							addre += '	</li>'
+							addre += '	</ul>';
+						}
+						$(".goodsreceipt").append(addre);
+
+						//商品详细信息
+						var orders = trade_detail.orders;
+
+						for(var o in orders) {
+							var shop = orders[o];
+
+							var goods = '<li class="mui-table-view-cell priceinfo">'
+							goods += '	<a href="" class="mui-navigate-right">'
+							goods += '	<div class="shopex-table">'
+							goods += '	<div class="shopex-table-cell shopex-col-xs-8 checkout-goods-list">'
+							goods += '		<div class="checkout-goods-warp">'
+							goods += '		<div class="thumbnail">'
+							goods += '		<div class="thumb-img">'
+							goods += '		<img src="http://www.jinyisoubu.com' + shop.pic_path + '" alt="" style="width: 6rem;height: 6rem;">'
+							goods += '	</div>'
+
+							goods += '		</div>'
+
+							goods += '	<div class="fabrwenzi">'
+							goods += '	<h6 style="color:#000000;white-space:normal; width:260px;">' + shop.title + '</h6>'
+							goods += '	<span style="font-size: 12px;color:#ccc;white-space:normal; width:140px;display: inline-block;">' + shop.spec_nature_info + '</span>'
+							goods += '	<p class="oid" style="display:none;" >' + shop.oid + '</p>'
+							goods += '	<p style="color: red;">¥<span class="price" >' + shop.price + '</span>/<i style="font-style:normal;">' + shop.unit + '</i></p>'
+
+							goods += '	</div>'
+
+							goods += '	</div>'
+
+							goods += '</div>'
+
+							goods += '	</div>'
+							goods += '	</a>'
+							goods += '	<div class="purchase" style="width: 100%;background-color: white;">'
+							goods += '	<div class="purchase-shu" style="width: 80%;height: 30px;margin: 0 auto;">'
+							goods += '	<p style="float: left;line-height: 30px;">购买数量</p>'
+							goods += '		<input type="text" class="num" value="' + shop.num + '" style="width: 45%;height: 30px;float:right;border: 1px solid #777;" />'
+							goods += '		</div>'
+
+							goods += '	<div class="purchase-shu" style="width: 80%;height: 30px;margin: 0 auto;margin-top: 1rem;">'
+							goods += '		<p style="float: left;line-height: 30px;">涨价或减价？</p>'
+							goods += '		<input type="text" class="adjust_fee" value="' + shop.adjust_fee + '" style="width: 45%;height: 30px;float:right;border: 1px solid #777;" />'
+							goods += '	</div>'
+							goods += '	</div>'
+
+							goods += '	</li>';
+							$("#culars").append(goods);
+						};
+
+						//添加运费
+						var yun = '<p style="float: left;line-height: 30px;">运费</p>'
+						yun += '<input type="text" class="post_fee" value="' + trade_detail.post_fee + '" style="width: 39%;height: 30px;float:right;border: 1px solid #777;margin-right: 2.8rem;" />';
+						$(".purchase-yun").append(yun);
+
+						//合计价格
+						var hj = '<div class="toal-he" style="width:78%;text-align:right;">'
+						hj += '<div class="toal-wen">'
+						hj += '	<p style="font-size:16px;color: #000000;">合计:<span>¥' + trade_detail.payment + '</span></p>'
+						hj += '</div>'
+						hj += '</div>';
+
+						$(".toal").append(hj);
+					}
+				},
+				error: function(res) {
+					mui.toast("网络出错,请重试");
+				},
+
+			});
+
+			//点击确定 获取数据 拼接在提交
+
+			$("#submit_btnque").click(function() {
+
+				var order = {};
+				var p = {};
+				$(".priceinfo").each(function(index, i) {
+
+					//li  each循环  获取到里面的  内容
+					var oid = $(i).find("p[class='oid']").text();
+					var price = $(i).find("span[class='price']").text();
+					var adjust_fee = $(i).find("input[class='adjust_fee']").val();
+					var num = $(i).find("input[class='num']").val();
+
+					//拼接对象
+					var a = {};
+					a.adjust_fee = adjust_fee;
+					a.num = num;
+					a.price = price;
+					//商品id
+					p[oid] = a;
+
+				});
+				var post_fee = $(".post_fee").val();
+				//转移p
+				order.order = JSON.stringify(p);
+				//获取运费和id
+				order.post_fee = post_fee;
+				order.tid = tids;
+				order = JSON.stringify(order);
+				mui.ajax('/index.php/topapi', {
+					data: {
+						format: 'json',
+						v: 'v1',
+						//名称
+						method: 'shop.trade.updatePrice',
+						//accessToken: '0551a8a681b377cb6bb2214e04734bd35247cd5d6aeff0154a8949e7e76f19c3',
+						accessToken: accessToken,
+						trade: order,
+					},
+
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+
+					success: function(data) {
+						if(data.errorcode != 0) {
+							// 出错
+							mui.toast(data.msg);
+							//失败或者成功跳转
+							setTimeout(function() {
+								mui.openWindow({
+									url: 'order.html?accessToken=' + accessToken,
+
+									id: 'order.html',
+
+								});
+							}, 3000);
+
+						} else {
+
+							setTimeout(function() {
+								mui.openWindow({
+									url: 'order.html?accessToken=' + accessToken,
+
+									id: 'order.html',
+
+								});
+							}, 3000);
+
+						}
+					},
+					error: function(res) {
+						mui.toast("网络出错,请重试");
+					},
+
+				});
+			})
+		</script>
+	</body>
+
+</html>
