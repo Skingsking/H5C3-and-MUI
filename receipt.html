@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>接单详情</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			.mui-pull-top-wrapper .mui-icon,
+			.mui-pull-top-wrapper .mui-spinner {
+				margin-top: 7px;
+			}
+			
+			.mui-pull-bottom-tips {
+				text-align: center;
+				background-color: #efeff4;
+				font-size: 15px;
+				line-height: 40px;
+				color: #777;
+			}
+			
+			.mui-pull-top-canvas {
+				overflow: hidden;
+				background-color: #fafafa;
+				border-radius: 40px;
+				box-shadow: 0 4px 10px #bbb;
+				width: 40px;
+				height: 40px;
+				margin: 0 auto;
+			}
+			
+			.mui-pull-top-canvas canvas {
+				width: 40px;
+			}
+			
+			.mui-slider-indicator.mui-segmented-control {
+				background-color: #efeff4;
+			}
+			
+			.mui-control-content {
+				background-color: #efeff4;
+				min-height: 150px;
+			}
+			
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+				color: red;
+			}
+			
+			.mui-slider .mui-segmented-control.mui-segmented-control-inverted~.mui-slider-group .mui-slider-item {
+				border-bottom: 1px solid #efeff4;
+			}
+			
+			.shopex-table {
+				display: table;
+				table-layout: fixed;
+				width: 120%;
+				padding-right: 1.5rem;
+				margin-left: 2rem;
+			}
+			
+			.checkout-goods-list {
+				margin: 0.5rem;
+				height: 7rem;
+				position: relative;
+				overflow: hidden;
+			}
+			
+			.checkout-goods-list .checkout-goods-warp {
+				width: 120%;
+				height: 7rem;
+				position: absolute;
+				top: 1rem;
+			}
+			
+			.checkout-goods-list .thumbnail {
+				position: relative;
+				width: 6rem;
+				height: 6rem;
+				float: left;
+				margin-right: 0.5rem;
+			}
+			
+			.checkout-goods-list .thumbnail .thumb-img {
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+			}
+			
+			.function-list .shopex-text-right {
+				font-size: 0.9rem;
+				color: #666;
+			}
+			
+			.shopex-table-cell {
+				vertical-align: middle;
+				display: table-cell;
+			}
+			
+			.shopex-text-right {
+				font-size: 0.9rem;
+				color: #666;
+			}
+			
+			.shopex-col-xs-2 {
+				width: 37%;
+			}
+			
+			.mui-navigate-left:after,
+			.mui-navigate-right:after,
+			.mui-push-left:after,
+			.mui-push-right:after {
+				top: 56%;
+				display: none;
+			}
+			
+			.mui-search .mui-placeholder {
+				font-size: 16px;
+				line-height: 34px;
+				position: absolute;
+				z-index: 1;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				display: inline-block;
+				height: 34px;
+				text-align: center;
+				color: #999;
+				border: 0;
+				border-radius: 6px;
+				background: 0 0;
+				background-color: white;
+				margin-top: 5px;
+			}
+			
+			.mui-checkbox.mui-left label,
+			.mui-radio.mui-left label {
+				padding-right: 15px;
+				padding-left: 10px;
+			}
+			
+			.muiul {
+				position: relative;
+				margin-top: 0;
+				margin-bottom: 0;
+				padding-left: 0;
+				list-style: none;
+				background-color: #fff;
+				border-bottom: 1px solid #ccc;
+			}
+			
+			.muili {
+				position: relative;
+				overflow: hidden;
+				padding: 11px 15px;
+			}
+			
+			.mui-checkbox input[type=checkbox]:before,
+			.mui-radio input[type=radio]:before {
+				font-family: Muiicons;
+				font-size: 17px;
+				font-weight: 400;
+				line-height: 1;
+				text-decoration: none;
+				color: #aaa;
+				border-radius: 0;
+				background: 0 0;
+				-webkit-font-smoothing: antialiased;
+			}
+			
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				position: absolute;
+				top: 66px;
+				right: 20px;
+				display: inline-block;
+				width: 17px;
+				height: 17px;
+				border: 0;
+				outline: 0!important;
+				background-color: transparent;
+				-webkit-appearance: none;
+			}
+			
+			.mui-checkbox.mui-left input[type=checkbox],
+			.mui-radio.mui-left input[type=radio] {
+				left: 10px;
+			}
+			
+			.-cell {
+				position: relative;
+				overflow: hidden;
+				padding: 0px 0px;
+			}
+			
+			.mui-input-clear {
+				-webkit-appearance: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #666;"></a>
+
+			<div class="mui-input-row mui-search" style="clear:none;">
+				<input type="search" class="mui-input-clear" placeholder="搜索店内商品" id="sousuo">
+			</div>
+			<input type="hidden" id="lao">
+
+		</header>
+		<div class="mui-content">
+			<div id="slider" class="mui-slider mui-fullscreen">
+
+				<div class="mui-slider-group">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+		<div class="mui-bar mui-bar-tab" style="height: 40px;">
+
+			<button style="width: 50%;background-color: #ccc;height: 40px;" id="fabu">发布新商品</button>
+			<button style="float: right;width: 50%;background-color: #666;height: 40px;" id="confirmBtn">确定</button>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/mui.pullToRefresh.js"></script>
+		<script src="js/mui.pullToRefresh.material.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script>
+			mui.init({
+				//页面初始化数据
+
+			});
+
+			//token值
+			function getUrlParam(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) {
+					return unescape(r[2]);
+
+				} else {
+					return null;
+				}
+			}
+			var fundid = getUrlParam('fundid');
+
+			//获取url传入的值
+			var accessToken = getUrlParam('accessToken');
+			if(accessToken == "" || accessToken == undefined || accessToken == null) {
+				mui.toast("系统跑路咯");
+
+			} else {
+
+			}
+
+			//页面初始化 数据
+			(function($) {
+				//阻尼系数
+				var deceleration = mui.os.ios ? 0.003 : 0.0009;
+				$('.mui-scroll-wrapper').scroll({
+					bounce: false,
+					indicators: true, //是否显示滚动条
+					deceleration: deceleration
+				});
+
+				//定义一个方法  通过方法 在输入内容后二次调用
+				function Refresh() {
+
+					//参数inde 为状态栏
+					$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+						$(pullRefreshEl).pullToRefresh({
+							//上啦加载
+							up: {
+								auto: true,
+								contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+								contentnomore: '没有更多数据了', //可选，请求完毕若没有更多数据时显示的提醒内容；
+								callback: function() {
+									var self = this;
+									setTimeout(function() {
+										var ul = self.element.querySelector('.mui-table-view');
+										//默认count 值 一次刷2个
+										count = 10;
+										var length = ul.querySelectorAll('li').length;
+										var li;
+										//设置翻页数 向上取整
+										var page = Math.ceil(length / count + 1);
+										//获取输入的value值
+										var inp = document.getElementById("sousuo").value;
+										document.getElementById("lao").value = inp;
+										mui.ajax('/index.php/topapi', {
+											data: {
+												format: 'json',
+												v: 'v1',
+												//名称
+												method: 'shop.caigou.itemList  ',
+												//accessToken: '476c2ab02a9d287b86177b9ecdfbf4d364ddc46daeb37a624663b927fe00f581',
+												accessToken: accessToken,
+												search_keywords: inp,
+												pages: page,
+
+											},
+
+											dataType: 'json', //服务器返回json格式数据
+											type: 'post', //HTTP请求类型
+
+											success: function(data) {
+
+												if(data.errorcode != 0) {
+													// 出错
+													mui.toast(data.msg);
+												} else {
+
+													//获取页面信息
+													var item = data.data.item_list;
+													var html = '';
+													for(k in item) {
+														var info = item[k];
+
+														itemid = info.item_id
+
+														li = document.createElement('li')
+														li.className = 'mui-table-view-cell';
+														var mato = '<div class="mui-input-row mui-radio mui-left">'
+														mato += '<label>'
+														mato += '<div class="mui-navigate-right"  >'
+														mato += '<div class="shopex-table">'
+														mato += '<div class="shopex-table-cell shopex-col-xs-8 checkout-goods-list">'
+														mato += '<div class="checkout-goods-warp"  ontouchstart="ccc(this,' + itemid + ')" >'
+														mato += '	<div class="thumbnail">'
+														mato += '	<div class="thumb-img">'
+														mato += '<img src="' + info.image_default_id + '" alt="" style="width: 100%;height:100%;">'
+
+														mato += '</div>'
+
+														mato += '</div>'
+
+														mato += '<div class="chanptext" style="margin-top: 1rem;">'
+														mato += '	<h5 style="color: #000;white-space:normal; width:260px;">' + info.title + '</h5>'
+														mato += '	<p style="font-size: 16px;margin-top: 1.5rem;color: #000000;"><span >￥</span>' + info.price + '<span style="color: #ccc;">/</span><span style="color: #ccc;">' + info.unit + '</span></p>'
+														mato += '	</div>'
+														mato += '	</div>'
+
+														mato += '	</div>'
+
+														mato += '</div>'
+														mato += '	</div>'
+														mato += '	</label>'
+
+														mato += '<input name="check" type="radio" value="' + itemid + '"  >'
+														mato += '</div>';
+
+														li.innerHTML = mato;
+
+														html += li;
+														ul.appendChild(li);
+
+													}
+													console.log(data);
+													// 如果有值的话 还是继续执行
+													self.endPullUpToRefresh();
+												}
+											},
+
+											error: function(res) {
+												mui.toast("网络出错,请重试");
+											},
+
+										});
+
+									}, 1000);
+								}
+							}
+						});
+					});
+					var createFragment = function(ul, index, count, reverse) {
+						var length = ul.querySelectorAll('li').length;
+						var fragment = document.createDocumentFragment();
+						var li;
+					};
+				}
+
+				//清空value值 调用方法
+				document.getElementById("sousuo").value = '';
+				document.getElementById("lao").value = '';
+				Refresh();
+				//获取input 输入框的值
+				mui('.mui-bar-nav').on('change', '#sousuo', function() {
+					var newworld = document.getElementById("sousuo").value;
+					var laoworld = document.getElementById("lao").value;
+					if(newworld != laoworld) {
+						a = document.querySelector('.mui-table-view');
+						while(a.hasChildNodes()) //当table下还存在子节点时 循环继续
+						{
+							a.removeChild(a.firstChild);
+						}
+					}
+
+					Refresh();
+
+				});
+			})(mui);
+
+			function ccc(e, idname) {
+				window.location.href = "http://www.jinyisoubu.com/index.php/wap/item-detail.html?item_id=" + idname;
+			}
+
+			//判断 单选框是否选中 点击确定提交按钮
+			document.getElementById("confirmBtn").addEventListener('tap', function(e) {
+
+				var tem = $("input[type='radio']:checked").val();
+				if(tem == '' || tem == undefined || tem == null) {
+					mui.toast('请选择商品');
+					return;
+				}
+
+				mui.ajax('/index.php/topapi', {
+					data: {
+						format: 'json',
+						v: 'v1',
+						//名称
+						method: 'shop.caigou.xuanitem ',
+						//accessToken: 'b5fb891f16a4875e31b509a311c8b07764ddc46daeb37a624663b927fe00f581',
+						accessToken: accessToken,
+						fund_id: fundid,
+						item_id: tem,
+
+					},
+
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					success: function(data) {
+						if(data.errorcode != 0) {
+							// 出错
+							mui.toast(data.msg);
+
+						} else {
+							mui.confirm('已接单，等待采购者匹配~', '提示', new Array('返回首页', '查看接单'), function(e) {
+
+								if(e.index == 1) {
+									mui.openWindow({
+										url: 'purchasing.html?accessToken=' + accessToken,
+										id: 'purchasing.html',
+
+									});
+
+								} else {
+									//调转发布商品
+									mui.toast('否');
+								}
+							});
+						}
+					},
+					error: function(res) {
+						mui.toast("网络出错,请重试");
+					},
+
+				});
+
+			});
+
+			//发布新商品	 跳转首页
+			//		document.getElementById("fabu").addEventListener('tap', function(e) {
+			//					
+			//			})
+		</script>
+	</body>
+
+</html>

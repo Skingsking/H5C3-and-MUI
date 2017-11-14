@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>取消订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style>
+		.mui-table-view-radio .mui-table-view-cell .mui-navigate-right:after {
+			font-size: 30px;
+			font-weight: 600;
+			right: 9px;
+			content: '';
+			color: red;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">取消订单</h1>
+		</header>
+
+		<div class="ground" style="width: 100%;height: 40px;background-color: white;margin-top: 44px;margin-bottom: 20px;">
+
+		</div>
+		<!--取消订单原因-->
+		<div class="quxiao" style="width: 100%;height: 40px;background-color: white;">
+			<p style="line-height: 40px;font-size: 16px;margin-left: 1rem;color: #000000;">请选择取消订单原因</p>
+		</div>
+
+		<!--隐藏类-->
+		<input type="hidden" name="tid" id="number" value="">
+		<input type="hidden" id="cancel_reason" name="cancel_reason" value="">
+
+		<ul class="mui-table-view mui-table-view-radio resmiu" id="reason">
+
+		</ul>
+
+		<section id="other" class="section-white content-padded" style="display: none;padding: 0.75rem 1rem;background-color: white;">
+			<textarea class="bbc-textarea" name="other_reason" id="shuru" cols="30" rows="5" style="margin: 0;border-color: transparent;background: #efefef;"></textarea>
+		</section>
+
+		<button type="submit" class="btn-an" style="width: 100%;background-color: red;color: white;font-size: 16px;margin-top: 20px;">确认取消</button>
+
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+
+	<script type="text/javascript">
+		mui.init();
+
+		//接收 订单管理页面传入的 url值
+		function getUrlParam(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r != null) {
+				return unescape(r[2]);
+
+			} else {
+				return null;
+			}
+		}
+		//获取url传入的值
+		var qx = getUrlParam('quxiao');
+		var accessToken = getUrlParam('accessToken');
+
+		if(accessToken == "" || accessToken == undefined || accessToken == null) {
+			mui.toast("系统跑路咯");
+
+		} else {
+
+		}
+
+		//将订单编号赋值到隐藏类
+		$("#number").val(qx);
+		var reasons = null;
+
+		mui.ajax('/index.php/topapi', {
+			data: {
+				format: 'json',
+				v: 'v1',
+				//名称
+				method: 'shop.trade.closeReasonList',
+				//accessToken: '0551a8a681b377cb6bb2214e04734bd35247cd5d6aeff0154a8949e7e76f19c3',
+				accessToken: accessToken,
+				shop_id: 2,
+
+			},
+
+			dataType: 'json', //服务器返回json格式数据
+			type: 'post', //HTTP请求类型
+
+			success: function(data) {
+				if(data.errorcode != 0) {
+					// 出错
+					mui.toast(data.msg);
+
+				} else {
+					//获取取消原因
+					var reason = data.data.reason;
+
+					var number = '<p style="line-height: 40px;font-size: 16px;margin-left: 1rem;">订单号：<span style="color: red;">' + qx + '</span></p>';
+					$(".ground").append(number);
+
+					var shopuser = reason.shopuser;
+
+					//console.log(user);
+
+					for(var i in shopuser) {
+						var yy = shopuser[i];
+						var ss = i;
+						//获取到原因
+						reason = ss;
+
+						var reason = '<li class="mui-table-view-cell" data-type="' + i + '">'
+						reason += '<a class="mui-navigate-right" style="font-size:14px;">' + yy + '</a>'
+						reason += '</li>';
+
+						$(".resmiu").append(reason);
+					}
+
+					// 正常
+
+				}
+			},
+			error: function(res) {
+				mui.toast("网络出错,请重试");
+			},
+
+		});
+
+		//显示其他原因盒子
+		$('#reason').on('tap', 'li', function() {
+			var reason = $(this).data('type');
+			$('#cancel_reason').val(reason);
+			if(reason && reason == 'other') {
+				$('#other').show();
+			} else {
+				$('#other').hide();
+			}
+		});
+
+		//获取到其他原因
+		var miss = $("#shuru").val();
+
+		$(".btn-an").click(function() {
+			mui.ajax('/index.php/topapi', {
+				data: {
+					format: 'json',
+					v: 'v1',
+					//名称
+					method: 'shop.trade.closeTrade',
+					//accessToken: '0551a8a681b377cb6bb2214e04734bd35247cd5d6aeff0154a8949e7e76f19c3',
+					accessToken: accessToken,
+					shop_id: 2,
+					tid: qx,
+					cancel_reason: reasons,
+					other_reason: miss,
+
+				},
+
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+
+				success: function(data) {
+					if(data.errorcode != 0) {
+						// 出错
+						mui.toast(data.msg);
+
+						setTimeout(function() {
+							mui.openWindow({
+								url: 'order.html?accessToken=' + accessToken,
+								id: 'order.html',
+
+							});
+						}, 3000);
+
+					} else {
+						mui.toast("订单取消成功");
+						//如果订单取消成功  3秒后跳转到 订单详情页
+						setTimeout(function() {
+							mui.openWindow({
+								url: 'order.html?accessToken=' + accessToken,
+
+								id: 'order.html',
+
+							});
+						}, 3000);
+
+					}
+				},
+				error: function(res) {
+					mui.toast("网络出错,请重试");
+				},
+
+			});
+
+		})
+	</script>
+
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>发货</title>
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/validate.css">
+		<link rel="stylesheet" href="css/mui.picker.css">
+
+		<script type="text/javascript" charset="utf-8">
+		</script>
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">发货</h1>
+		</header>
+		<div class="mui-content">
+			<!--收货信息-->
+			<div class="information" style="background-color: white;">
+				<div class="information-one" style="border-bottom: 1px solid #777;height: 40px;">
+					<p style="line-height: 40px;color: #000;margin-left: 1rem;margin-bottom: 0px;font-size:15px ;">收货信息</p>
+				</div>
+			</div>
+
+			<div class="delivery" style="background-color: white;border-bottom: 1px solid #777;">
+
+			</div>
+
+			<div class="mui-input-group" class='mui-scroll-wrapper'>
+
+				<div class="mui-input-row  wuliu">
+					<label>物流公司</label>
+					<select type="checkbox" id="sel" class="mui-input-clear" placeholder="请选择" style="font-size: 15px;">
+
+					</select>
+				</div>
+
+				<div class="mui-input-row peidan">
+					<label style="width: 45%;">配单送号</label>
+					<input type="text" class="mui-input-clear" name='' placeholder="请填写配单送号" style='font-size: 15px;width: 55%;' value="" id="dh">
+				</div>
+
+				<!--自提备注-->
+				<div style="margin-left: 1rem;display: none;" class="ziti">自提备注
+					<section id="other" class="section-white content-padded" style="padding: 0.75rem 1rem; background-color: white;">
+						<textarea class="bbc-textarea" name="other_reason" id="shuru" cols="30" rows="5" style="margin: 0;border-color: transparent;background: #efefef;"></textarea>
+					</section>
+				</div>
+				<input type="submit" value="确认发货" id="inp-fahuo" style='background: #777;color: white;text-align: center;font-size: 16px;width: 100%;'>
+			</div>
+
+		</div>
+
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/picker.min.js"></script>
+		<script src="js/data.wuliu.js"></script>
+
+		<script>
+			mui.init({
+				swipeBack: false
+			});
+
+			//接收 订单管理页面传入的 url值
+			function getUrlParam(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) {
+					return unescape(r[2]);
+
+				} else {
+					return null;
+				}
+			}
+			//获取url传入的值
+			var fhxq = getUrlParam('fh');
+			var accessToken = getUrlParam('accessToken');
+
+			if(accessToken == "" || accessToken == undefined || accessToken == null) {
+				mui.toast("系统跑路咯");
+
+			} else {
+
+			}
+
+			//获取发货类型
+			var ment = null;
+			//是否为自提
+			var isziti = null;
+
+			//订单发货页面信息
+			mui.ajax('/index.php/topapi', {
+				data: {
+					format: 'json',
+					v: 'v1',
+					//名称
+					method: 'shop.trade.godelivery',
+					//accessToken: '0551a8a681b377cb6bb2214e04734bd35247cd5d6aeff0154a8949e7e76f19c3',
+					accessToken: accessToken,
+					shop_id: 2,
+					tid: fhxq,
+
+				},
+
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+
+				success: function(data) {
+					if(data.errorcode != 0) {
+						// 出错
+						mui.toast(data.msg);
+
+					} else {
+						//获取物流公司信息
+						var dlycorp = data.data.dlycorp;
+						wllength = dlycorp.length;
+						if(dlycorp.length > 0 && data.data.ziti != "true") {
+
+							for(m in dlycorp) {
+								var mation = dlycorp[m];
+
+								var tics = '<option value="' + mation.corp_code + '">' + mation.corp_name + '</option>';
+								$("#sel").append(tics);
+							};
+						} else {
+							$("#inp-fahuo").css("dispaly", "none");
+						}
+
+						//获取是否为线下自提
+						var tradeInfo = data.data.tradeInfo;
+
+						var shipping = tradeInfo.shipping_type;
+						ment = shipping;
+						//添加收货人姓名 手机号 地址
+						//如果为线下自提显示不同的页面
+						if(tradeInfo.shipping_type == "xxziti") {
+							var xx = '<p style="font-size: 16px;height: 21px;line-height: 32px;margin-left: 1rem;color: #000000;">线下自提</p>';
+							$(".wuliu").css("display", "none");
+							$(".peidan").css("display", "none");
+						} else if(tradeInfo.shipping_type == "ziti") {
+							var xx = '<p style="font-size: 16px;height: 21px;line-height: 32px;margin-left: 1rem;color: #000000;">上门自提</p>';
+							$(".wuliu").css("display", "none");
+							$(".peidan").css("display", "none");
+						} else {
+							if(wllength <= 0) {
+								mui.toast("请完善物流信息")
+							}
+
+							var xx = '<p style="margin-bottom: 0px;color: #000;margin-left: 1rem;font-size:15px ;">' + tradeInfo.receiver_name + '<span style="margin-left: 2rem;">' + tradeInfo.receiver_mobile + '</span></p>'
+							xx += '<h5 style="color: #000000;font-size: 15px;margin-left: 1rem;">' + tradeInfo.receiver_state + tradeInfo.receiver_city + tradeInfo.receiver_address + tradeInfo.receiver_district + '</h5>';
+
+						}
+						$(".delivery").append(xx);
+
+						//判断是否为自提
+						var ziti = data.data.ziti;
+						isziti = ziti;
+
+						if(ziti == "true") {
+							$(".ziti").css("display", "block");
+						} else {
+
+						}
+
+					}
+				},
+				error: function(res) {
+					mui.toast("网络出错,请重试");
+				},
+
+			});
+
+			//发货的时候 提交内容信息
+
+			$("#inp-fahuo").click(function() {
+
+				var wl = $("#sel  option:selected").val();
+
+				var dh = $("#dh").val();
+
+				var tid = fhxq;
+
+				var dlytmplId = ment;
+
+				var isZiti = isziti;
+
+				//获取自提备注信息
+				var shuru = $("#shuru").val();
+
+				mui.ajax('/index.php/topapi', {
+					data: {
+						format: 'json',
+						v: 'v1',
+						//名称
+						method: 'shop.trade.delivery',
+						//accessToken: '0551a8a681b377cb6bb2214e04734bd35247cd5d6aeff0154a8949e7e76f19c3',
+						accessToken: accessToken,
+						shop_id: 2,
+						seller_id: 12,
+						dlytmplId: dlytmplId,
+						logi_no: dh,
+						tid: fhxq,
+						corp_code: wl,
+						isZiti: isZiti,
+						ziti_memo: shuru
+
+					},
+
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+
+					success: function(data) {
+						if(data.errorcode != 0) {
+							// 出错
+							mui.toast(data.msg);
+							setTimeout(function() {
+								mui.openWindow({
+									url: 'order.html?accessToken=' + accessToken,
+									id: 'order.html',
+
+								});
+							}, 3000);
+
+						} else {
+							//成功或者失败都要详情页
+							setTimeout(function() {
+								mui.openWindow({
+									url: 'order.html?accessToken=' + accessToken,
+									id: 'order.html',
+
+								});
+							}, 3000);
+							// 正常
+
+						}
+					},
+					error: function(res) {
+						mui.toast("网络出错,请重试");
+					},
+
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

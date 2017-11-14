@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/mui.picker.css">
+		<!--验证-->
+		<link rel="stylesheet" type="text/css" href="css/validate.css">
+
+		<style>
+			.dianzhao {
+				border-bottom: 1px solid #777;
+			}
+			
+			.dianzhao-img {
+				width: 100%;
+				height: 10rem;
+				position: relative;
+			}
+			
+			.dianzhao-img img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.dianzhao-img .dianzhao-tiao {
+				background-color: #777;
+				color: white;
+				position: absolute;
+				bottom: 0px;
+				width: 100%;
+				text-align: center;
+				font-size: 14px;
+			}
+			
+			.dianzhao-imgtwo img {
+				display: inline-block;
+				width: 15%;
+				height: 3.5rem;
+			}
+			
+			.dianzhao-imgtwo {
+				text-align: center;
+				margin-top: 0.5rem;
+			}
+			
+			.mmediateorderdian button {
+				width: 50%;
+				height: 50px;
+			}
+			
+			.mmediateorderdian .btn-222 {
+				background-color: #777;
+				float: right;
+				color: #000;
+			}
+			
+			.mmediateorderdian .btn-111 {
+				background-color: #eee;
+				float: left;
+				color: #000;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #666;"></a>
+			<h1 class="mui-title">店铺管理</h1>
+
+		</header>
+
+		<!--总页-->
+		<div class="mui-content">
+
+			<form class="mui-input-group" class='mui-scroll-wrapper' id="formdian">
+
+				<!--店招图位置-->
+				<div class="dianzhao">
+					<div class="dianzhao-img">
+						<input type="hidden" name="" id="img_logo" value="" />
+						<span class="dianzhao-img-tu">
+						<img src="" alt="">
+						</span>
+						<div class="dianzhao-tiao">点击下方，设置个性化店招，提高买家吸引力</div>
+					</div>
+
+					<div class="dianzhao-imgtwo">
+						<span>
+				 		<img src="image/pz.png" id="headImage6" class="my_img_class " alt="请上传">
+				 	</span>
+						<span>
+				 		<img src="image/01.png" alt="" />
+				 	</span>
+						<span>
+				 		<img src="image/02.png" alt="" />
+				 	</span>
+						<span>
+				 		<img src="image/03.png" alt="" />
+				 	</span>
+
+						<span>
+				 		<img src="image/04.png" alt="" />
+				 	</span>
+
+						<span>
+				 		<img src="image/05.png" alt="" />
+				 	</span>
+					</div>
+				</div>
+
+				<!--下面信息-->
+				<input type="hidden" name="show_shop_logo" id="inpshow" value="off" />
+				<input type="hidden" name="widgetsId" id="guajian" value="" />
+
+				<div class="mui-input-row" id='currname'>
+					<label style='width: 55%;'>店铺logo</label>
+					<input type="hidden" name="shop_logo" id="img_logotwo" value="" data-required="true" data-descriptions="logo" />
+					<img src='image/pz.png' id="headImage7" class="my_img_class " style='width: 40px;height: 40px;display: inline-block; background: #007AFF;' alt='请上传'>
+				</div>
+
+				<div class="mui-input-row">
+					<label>店铺名称</label>
+					<input type="text" class="mui-input-clear" id="ming" placeholder="西西的小店" name="shop_name" style='font-size: 14px;' data-required="true" data-descriptions="username">
+				</div>
+
+				<div class="mui-input-row" id="zhanshi">
+					<label style="width: 55%;">商品展示模块</label>
+
+					<input type="text" class="mui-input-clear" placeholder="配置模块" name='' style='font-size: 15px;width: 45%;'>
+
+				</div>
+
+				<div class="mui-input-row" id="jingy">
+					<label>经营类目</label>
+
+					<input type="text" name="shop[shop_cat][]" value="" data-required="true" data-descriptions="address" id="leimu" />
+				</div>
+
+				<div class="mui-input-row">
+					<label>联系电话</label>
+					<input type="text" class="mui-input-clear" placeholder="请输入" id="iphonef" name="shop_info[company_cmobile]" style='font-size: 15px;' data-validate="phone" data-describedby="phone-description">
+				</div>
+
+				<div class="mui-input-row">
+					<label style='width: 40%;'>店铺所在地</label>
+					<input type="hidden" name="area" id="suozi" value="" />
+					<p class="mui-input-clear" id="city_textsps" style='text-align: center;line-height: 40px;'>选择省市区</p>
+
+				</div>
+
+				<div class="mui-input-row">
+					<label>详细地址</label>
+					<input type="text" class="mui-input-clear" id="xqdz" placeholder="请输入" name="shop[shop_addr]" style='font-size: 15px;' data-required="true" data-descriptions="xiangxi">
+				</div>
+
+				<!--预览 保存-->
+				<div class='mmediateorderdian ' style="width: 100%;background-color: white;">
+					<button type='button' class='btn-111' id="yulan">预览店铺</button>
+
+					<button type='submit' class='btn-222'>保存修改</button>
+				</div>
+			</form>
+
+		</div>
+	</body>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery-mvalidate.js"></script>
+	<script src="js/picker.min.js"></script>
+	<script src="js/data.city.js"></script>
+
+	<script type="text/javascript">
+		//token值
+		function getUrlParam(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r != null) {
+				return unescape(r[2]);
+
+			} else {
+				return null;
+			}
+		}
+		//获取url传入的值
+		var accessToken = getUrlParam('accessToken');
+		if(accessToken == "" || accessToken == undefined || accessToken == null) {
+			mui.toast("系统跑路咯");
+
+		} else {
+
+		}
+
+		var sid = null;
+
+		//首页刚进去获取数据
+		mui.init(
+			mui.ajax('/index.php/topapi', {
+				data: {
+					format: 'json',
+					v: 'v1',
+					//名称
+					method: 'shop.shop.zhuangxiu ',
+					//accessToken: '0551a8a681b377cb6bb2214e04734bd35247cd5d6aeff0154a8949e7e76f19c3',
+					accessToken: accessToken,
+					shop_id: 2,
+				},
+
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+
+				success: function(data) {
+					if(data.errorcode != 0) {
+						// 出错
+						mui.toast(data.msg);
+
+					} else {
+						// 正常
+						var shopid = data.data.shop.shop_id;
+						sid = shopid;
+
+						//获取店招图片和 是否打开
+						if(data.data.waplogo.length == 0) {
+
+						} else {
+							//获取的为图片
+							var dianimg = data.data.waplogo[0].params.shop_logo;
+							$("#img_logo").val(dianimg);
+
+							var imgSrc = $(this).attr("src");
+							var img = "<img src='" + dianimg + "' alt='' />";
+
+							$(".dianzhao-img-tu").html(img);
+
+							var dianlogo = data.data.waplogo[0].params.show_shop_logo;
+
+							$("#inpshow").val(dianlogo);
+
+							var widgetsIds = data.data.waplogo[0].widgets_id;
+							$("#guajian").val(widgetsIds);
+
+						}
+
+						var shopname = data.data.shop.shop_name;
+
+						$("#ming").val(shopname);
+
+						var shoplogo = data.data.shop.shop_logo;
+
+						$("#img_logotwo").val(shoplogo);
+						$("#headImage7").attr("src", shoplogo);
+
+						var catname = data.data.shop.cat_id;
+
+						if(catname.length == 2) {
+							str = "面料 辅料"
+						} else if(catname[0] == 406) {
+							str = "面料"
+						} else {
+							str = "辅料"
+						}
+
+						$("#leimu").val(str);
+
+						var iphone = data.data.shop.mobile;
+						$("#iphonef").val(iphone);
+
+						var dizhi = data.data.shop.shop_addr;
+						$("#xqdz").val(dizhi);
+
+						var suozai = data.data.shop.area;
+						$("#city_textsps").text(suozai);
+
+						if(suozai == null || suozai == undefined || suozai == "") {
+
+						} else {
+							$("#suozi").val(suozai);
+						}
+
+						console.log(data);
+
+					}
+				},
+				error: function(res) {
+					mui.toast("网络出错,请重试");
+				},
+
+			})
+		);
+	</script>
+
+	<script type="text/javascript">
+		var city_pickerss = new mui.PopPicker({
+			layer: 3
+		});
+		city_pickerss.setData(init_city_picker);
+		$("#city_textsps").on("tap", function() {
+			setTimeout(function() {
+				city_pickerss.show(function(items) {
+					var miss = $("#city_textsps").html((items[0] || {}).text + " " + (items[1] || {}).text + " " + (items[2] || {}).text);
+
+					$("#suozi").val(miss.text());
+
+				});
+			}, 200);
+		});
+
+		//点击图片更换背景图片
+		$(function() {
+			$(".dianzhao-imgtwo img").bind("click", function() {
+				var imgSrc = $(this).attr("src");
+				var img = "<img src='" + imgSrc + "' alt='' />";
+
+				$(".dianzhao-img-tu").html(img);
+				$("#img_logo").val(imgSrc);
+			});
+		})
+
+		//跳转展示页面
+		document.getElementById("zhanshi").addEventListener('tap', function() {
+			mui.openWindow({
+
+				url: 'commodity.html?accessToken=' + accessToken,
+
+				id: 'commodity.html',
+
+			});
+
+		});
+
+		console.log(sid);
+
+		$("#yulan").click(function() {
+			window.location.href = "http://www.jinyisoubu.com/wap/shop-index.html?shop_id=" + sid;
+		})
+	</script>
+	<script type="text/javascript">
+		//店招
+		document.getElementById('headImage6').addEventListener('tap', function() {
+			var two = 6;
+			if(mui.os.plus) {
+				var a = [{
+					title: "拍照"
+				}, {
+					title: "从手机相册选择"
+				}];
+				plus.nativeUI.actionSheet({
+
+					cancel: "取消",
+					buttons: a
+				}, function(b) {
+					switch(b.index) {
+						case 0:
+							break;
+						case 1:
+							getImage(two);
+							break;
+						case 2:
+							galleryImg(two);
+							break;
+						default:
+							break;
+					}
+				})
+			}
+		}, false);
+		document.getElementById('headImage7').addEventListener('tap', function() {
+			var two = 7;
+			if(mui.os.plus) {
+				var a = [{
+					title: "拍照"
+				}, {
+					title: "从手机相册选择"
+				}];
+				plus.nativeUI.actionSheet({
+					//                  title: "修改用户头像", 
+					cancel: "取消",
+					buttons: a
+				}, function(b) { /*actionSheet 按钮点击事件*/
+					switch(b.index) {
+						case 0:
+							break;
+						case 1:
+							getImage(two); /*拍照*/
+							break;
+						case 2:
+							galleryImg(two); /*打开相册*/
+							break;
+						default:
+							break;
+					}
+				})
+			}
+		}, false);
+
+		//拍照 
+		function getImage(two) {
+			var c = plus.camera.getCamera();
+			c.captureImage(function(e) {
+				plus.io.resolveLocalFileSystemURL(e, function(entry) {
+					var s = entry.toLocalURL() + "?version=" + new Date().getTime();
+					uploadHead(s, two); /*上传图片*/
+				}, function(e) {
+					console.log("读取拍照文件错误：" + e.message);
+				});
+			}, function(s) {
+				console.log("error" + s);
+			}, {
+				filename: "_doc/head.png"
+			})
+		}
+
+		//本地相册选择 
+		function galleryImg(two) {
+			plus.gallery.pick(function(a) {
+				plus.io.resolveLocalFileSystemURL(a, function(entry) {
+					plus.io.resolveLocalFileSystemURL("_doc/", function(root) {
+						root.getFile("head.png", {}, function(file) {
+							//文件已存在 
+							file.remove(function() {
+								console.log("file remove success");
+								entry.copyTo(root, 'head.png', function(e) {
+										var e = e.fullPath + "?version=" + new Date().getTime();
+
+										uploadHead(e, two); /*上传图片*/
+
+									},
+									function(e) {
+										console.log('copy image fail:' + e.message);
+									});
+							}, function() {
+								console.log("delete image fail:" + e.message);
+							});
+						}, function() {
+							//文件不存在 
+							entry.copyTo(root, 'head.png', function(e) {
+									var path = e.fullPath + "?version=" + new Date().getTime();
+									uploadHead(path, two); /*上传图片*/
+								},
+								function(e) {
+									console.log('copy image fail:' + e.message);
+								});
+						});
+					}, function(e) {
+						console.log("get _www folder fail");
+					})
+				}, function(e) {
+					console.log("读取拍照文件错误：" + e.message);
+				});
+			}, function(a) {}, {
+				filter: "image"
+			})
+		};
+
+		//上传头像图片 
+		function uploadHead(imgPath, two) {
+			console.log("imgPath = " + imgPath);
+			document.getElementById('headImage' + two).setAttribute('alt', '上传成功');
+
+			var mainImage = document.getElementById("headImage" + two);
+
+			　　　　
+			mainImage.src = imgPath;
+
+			var image = new Image();
+			image.src = imgPath;
+			image.onload = function() {
+				var imgData = getBase64Image(image);
+				var imgData = imgData.replace(/^data:image\/(\w+);base64,/, '')
+
+				mui.ajax('/index.php/topapi', {
+					data: {
+						format: 'json',
+						v: 'v1',
+						//名称
+						method: 'image.appupload',
+						//accessToken: '0551a8a681b377cb6bb2214e04734bd35247cd5d6aeff0154a8949e7e76f19c3',
+						accessToken: accessToken,
+						upload_type: 'base64',
+						image: imgData,
+						image_input_title: '1.jpg',
+						form: 'appshop',
+						image_type: 'shop',
+						id: 2,
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 15000, //超时时间设置为10秒；				
+					success: function(data) {
+						if(data.errorcode != 0) {
+							// 出错
+							mui.toast(data.msg);
+						} else {
+							mui.toast(JSON.stringify(data));
+
+							var imgage_id = data.image_id;
+							var url = data.url;
+							var t_url = data.t_url;
+							if(two == 6) {
+
+								var imgSrc = $(this).attr("src");
+								var img = "<img src='" + data.image_id + "' alt='' />";
+								$(".dianzhao-img-tu").html(img);
+								$("#img_logo").val(data.image_id);
+
+							} else if(two == 7) {
+								document.getElementById('img_logotwo').value = data.image_id;
+
+							}
+
+						}
+					},
+					error: function(res) {
+						mui.toast("网络出错,请重试");
+					},
+
+				});
+			}
+		}
+		//将图片压缩转成base64 
+		function getBase64Image(img) {
+			var canvas = document.createElement("canvas");
+			var width = img.width;
+			var height = img.height;
+			// calculate the width and height, constraining the proportions 
+			if(width > height) {
+				if(width > 100) {
+					height = Math.round(height *= 100 / width);
+					width = 100;
+				}
+			} else {
+				if(height > 100) {
+					width = Math.round(width *= 100 / height);
+					height = 100;
+				}
+			}
+			canvas.width = width; /*设置新的图片的宽度*/
+			canvas.height = height; /*设置新的图片的长度*/
+			var ctx = canvas.getContext("2d");
+			ctx.drawImage(img, 0, 0, width, height); /*绘图*/
+			var dataURL = canvas.toDataURL("image/*", 0.8);
+			return dataURL.replace("data:image/*;base64,", "");
+		}
+
+		$(function() {
+			$.mvalidateExtend({
+				phone: {
+					required: true,
+					pattern: /^0?1[3|4|5|8][0-9]\d{8}$/,
+					each: function() {},
+					descriptions: {
+						required: '<div class="field-invalidmsg">请输入手机号码</div>',
+						pattern: '<div class="field-invalidmsg">手机号码格式不正确</div>',
+						valid: '<div class="field-validmsg">正确</div>'
+					}
+				}
+			});
+			$("#formdian").mvalidate({
+				type: 1,
+				onKeyup: true,
+				sendForm: false,
+				firstInvalidFocus: false,
+				valid: function(event, options) {
+
+					var shopname = $("#ming").val();
+
+					//获取详细地址
+					var shopaddr = $("#xqdz").val();
+
+					//获取店铺log
+					var dlo = $("#img_logotwo").val();
+
+					//获取省市县
+					var areas = $("#suozi").val();
+
+					if(areas == null || areas == undefined || areas == "") {
+						mui.toast("请输入地址");
+						return;
+					} else {
+
+					}
+
+					//获取widgetsId值
+					var widgetss = $("#guajian").val();
+
+					//获取联系电话
+					var dianhua = $("#iphonef").val();
+
+					//获取 shop-shop-logo  on开  off关
+					var shoplogos = $("#inpshow").val();
+
+					//获取店招logo
+					var dizologo = $("#img_logo").val();
+
+					var param = new Object();
+					param['show_shop_logo'] = shoplogos;
+					param['shop_logo'] = dizologo;
+
+					mui.ajax('/index.php/topapi', {
+						data: {
+							format: 'json',
+							v: 'v1',
+							//名称
+							method: 'shop.shop.zhuangxiusave ',
+							//accessToken: '0551a8a681b377cb6bb2214e04734bd35247cd5d6aeff0154a8949e7e76f19c3',
+							accessToken: accessToken,
+							shop_id: 2,
+							param: JSON.stringify(param),
+							shop_name: shopname,
+							shop_logo: dlo,
+							shop_addr: shopaddr,
+							area: areas,
+							mobile: dianhua,
+							widgetsId: widgetss,
+
+						},
+
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+
+						success: function(data) {
+							if(data.errorcode != 0) {
+								// 出错
+								mui.toast(data.msg);
+
+							} else {
+								// 正常
+								console.log(data);
+							}
+						},
+						error: function(res) {
+							mui.toast("网络出错,请重试");
+						},
+
+					});
+
+				},
+
+				descriptions: {
+					logo: {
+						required: '请保存logo'
+
+					},
+
+					address: {
+						required: '请选择经营类目'
+
+					},
+					username: {
+						required: '请输入店铺名称'
+					},
+
+					xiangxi: {
+						required: '请输入详细地址'
+					},
+
+				}
+			});
+		})
+	</script>
+
+</html>

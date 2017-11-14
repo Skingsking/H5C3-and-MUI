@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+
+		<style>
+			i {
+				font-style: normal;
+				margin-left: 1rem;
+				font-size: 14px;
+			}
+			
+			.mmediateorder button {
+				width: 50%;
+				height: 50px;
+			}
+			
+			.mmediateorder .btn-111 {
+				background-color: #777;
+				float: left;
+				color: white;
+			}
+			
+			.mmediateorder .btn-222 {
+				background-color: #EEE;
+				float: right;
+				color: #222;
+			}
+			.mui-slider .mui-slider-group .mui-slider-item img{
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #666;"></a>
+			<h1 class="mui-title">采购详情</h1>
+
+		</header>
+
+		<div class="mui-content" style="padding-top: 0;">
+
+			<div class="mui-slider imggun">
+				
+			</div>
+			<!--采购信息-->
+			<div class="information" style="border-bottom: 1px solid #e4e5e6;background: #fff;">
+
+			</div>
+
+			<!--详细参数-->
+			<div class="information-two" style="border-bottom: 1px solid #e4e5e6;background: #fff;margin-top: 1rem;">
+				<div class="xiqngxic" style="border-bottom: 1px solid #eee;">
+					<i>详细参数</i>
+				</div>
+
+				<div style="padding-top: 0.5rem" class="xqxi">
+				
+				</div>
+
+			</div>
+
+			
+
+			<!--接单-->
+			<div class='mmediateorder' style='width: 100%;background-color: white;margin-top: 1rem;'>
+				
+			</div>
+
+		</div>
+
+	</body>
+	<script type="text/javascript">
+		//	var gallery = mui('.mui-slider');
+		//			gallery.slider({
+		//			  interval:0//自动轮播周期，若为0则不自动播放，默认为0；
+		//			});
+		mui.init({
+			//页面初始化数据
+
+		});
+		
+		function getUrlParam(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) {
+					return unescape(r[2]);
+
+				} else {
+					return null;
+				}
+			}
+			var  fundid=getUrlParam('fundid');
+		
+
+			//获取url传入的值
+						var accessToken = getUrlParam('accessToken');
+						if(accessToken == "" || accessToken == undefined || accessToken == null) {
+							mui.toast("系统跑路咯");
+			
+						} else {
+			
+						}
+		
+		
+		mui.ajax('/index.php/topapi', {
+				data: {
+					format: 'json',
+					v: 'v1',
+					//名称
+					method: 'shop.caigou.xiangqing ',
+					//accessToken: 'b5fb891f16a4875e31b509a311c8b07764ddc46daeb37a624663b927fe00f581',
+					accessToken:accessToken,
+					fund_id:fundid,
+					
+
+				},
+
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+
+				success: function(data) {
+					if(data.errorcode != 0) {
+						// 出错
+						mui.toast(data.msg);
+
+					} else {
+							var data = data.data;
+								//获取导航图片
+
+						
+						//获取导航图片
+					var slide = data.slide_images;
+					for(i in slide) {
+					
+						var img = '<div class="mui-slider-group">'
+						img += '<div class="mui-slider-item">'
+						img += '	<a href="#"><img src="http://www.jinyisoubu.com' + slide[i] + '"  /></a>'
+						img += '	</div>'
+					
+						img += '</div>';
+						$(".imggun").append(img);
+
+					}
+					
+						//采购信息
+					var mation = '<h4 style="margin-left: 1rem;">' + data.fund_name + '</h4>'
+					mation += '<div style="padding-top: 0.5rem">'
+					mation += '<i style="color: grey;">' + data.status + '</i>'
+					mation += '<i style="color: grey;">' + data.apply_province + data.apply_city + '</i>'
+					mation += '</div>';
+
+					$(".information").append(mation);
+					
+					
+					//获取详细信息
+					var xx = '<i style="color: grey;display: block;">编号：<i style="color: black">' + data.apply_number + '</i></i>'
+					xx += '<i style="color: grey;display: block">品类：<i style="color: black">' + data.top_cat + '&gt;' + data.second_cat + '</i></i>'
+					xx += '<i style="color: grey;display: block">有效期：<i style="color: black">' + data.fund_days + '天</i></i>'
+					xx += '<i style="color: grey;display: block">数量：<i style="color: black">' + data.need_num + data.need_unit + '</i></i>';
+					$(".xqxi").append(xx);
+
+					//状态显示
+					var zt = '<button>'
+					zt += '<a href="tel:' + data.fund_phone + '" style="color:#222">给买家打电话</a>'
+					zt += '</button>'
+					
+					if(accessToken=="" ||accessToken==null || accessToken==undefined){
+						zt += '<button type="button" class="btn-222" ontouchstart="denglu(this)">立即接单</button>';
+					}else{
+						zt += '<button type="button" class="btn-222" ontouchstart="nini(this)">立即接单</button>';
+					}
+					
+					$(".mmediateorder").append(zt);
+
+					}
+				},
+				error: function(res) {
+					mui.toast("网络出错,请重试");
+				},
+
+			});
+			
+		
+			
+			//var  fundid=40;
+		 function nini(e){
+		 	
+		 	mui.ajax('/index.php/topapi', {
+				data: {
+					format: 'json',
+					v: 'v1',
+					//名称
+					method: 'shop.caigou.jiedan',
+					//accessToken: '0551a8a681b377cb6bb2214e04734bd35247cd5d6aeff0154a8949e7e76f19c3',
+					accessToken:accessToken,
+					fund_id:fundid,
+					shop_id:2,
+
+				},
+
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+
+				success: function(data) {
+					if(data.errorcode != 0) {
+						// 出错
+						mui.toast(data.msg);
+
+					} else {       
+							mui.openWindow({
+		  		
+							//传入参数 url参
+							url: 'receipt.html?fundid=' + fundid +'&accessToken=' + accessToken,
+		
+							id: 'receipt.html',
+		 
+						});
+					
+					}
+				},
+				error: function(res) {
+					mui.toast("网络出错,请重试");
+				},
+
+			});
+			
+		 	
+		 	
+		 	
+		
+		}
+	  	
+	  	
+	  		
+		 function denglu(e){
+			mui.toast("请登录账号");
+		}
+	  	
+		  	
+
+	
+	</script>
+
+</html>

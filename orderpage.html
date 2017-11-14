@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>订单详情</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			.mui-control-content {
+				background-color: #efeff4;
+				min-height: 150px;
+			}
+			
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+				color: #000;
+			}
+			
+			.mui-slider .mui-segmented-control.mui-segmented-control-inverted~.mui-slider-group .mui-slider-item {
+				border-bottom: 1px solid #efeff4;
+			}
+			
+			.shopex-table {
+				display: table;
+				table-layout: fixed;
+				width: 120%;
+				padding-right: 1.5rem;
+			}
+			
+			.checkout-goods-list {
+				margin: 0.5rem;
+				height: 7rem;
+				position: relative;
+				overflow: hidden;
+			}
+			
+			.checkout-goods-list .checkout-goods-warp {
+				width: 120%;
+				height: 7rem;
+				position: absolute;
+				top: 0;
+			}
+			
+			.checkout-goods-list .thumbnail {
+				position: relative;
+				width: 6rem;
+				height: 6rem;
+				float: left;
+				margin-right: 0.5rem;
+			}
+			
+			.checkout-goods-list .thumbnail .thumb-img {
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+			}
+			
+			.function-list .shopex-text-right {
+				font-size: 0.9rem;
+				color: #666;
+			}
+			
+			.shopex-table-cell {
+				vertical-align: middle;
+				display: table-cell;
+			}
+			
+			.shopex-text-right {
+				font-size: 0.9rem;
+				color: #666;
+			}
+			
+			.shopex-col-xs-2 {
+				width: 23%;
+			}
+			
+			.mui-navigate-left:after,
+			.mui-navigate-right:after,
+			.mui-push-left:after,
+			.mui-push-right:after {
+				top: 48%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style='color:#CCCCCC'></a>
+			<h1 class="mui-title">订单详情</h1>
+		</header>
+
+		<div class="mui-content">
+
+			<div class='shop-xq'>
+
+			</div>
+
+			<div class='goodsreceipt'>
+
+			</div>
+
+			<div class="fabricdisplay">
+				<div class="mui-input-group" class='mui-scroll-wrapper'>
+					<ul class="mui-table-view mui-table-view-chevron" id="srore">
+
+					</ul>
+
+					<div class='xinxi-zhanshi' style="background: white; list-style: none;margin-top: -16px;">
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class='paymentmethod' style='background-color: white;margin-top: 20px;width: 100%;height: 30px;'>
+
+				<div class="zhifu" style='float: left;width: 75%;line-height: 30px;font-size: 14px;'>支付方式：</div>
+				<div class="zaixin" style='float: right;width: 24%;line-height: 30px;font-size: 14px;font-weight: 600;'>在线支付</div>
+
+			</div>
+
+			<div class='deliverymode  wulx' style='background-color: white;width: 100%;height: 80px;border-top:1px solid #eee ;'>
+
+			</div>
+
+			<div class='deliverymode' style='background-color: white;width: 100%;border-top:1px solid #eee ;' id="fapiao">
+
+			</div>
+
+			<div class='button-two' style="float: right;margin-top: 10px;margin-right: 20px;">
+
+			</div>
+
+		</div>
+
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src='js/jquery.min.js'></script>
+
+		<script type="text/javascript">
+			mui.init();
+
+			function getUrlParam(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) {
+					return unescape(r[2]);
+
+				} else {
+					return null;
+				}
+			}
+			//获取url传入的值
+			var misys = getUrlParam('misy');
+			var accessToken = getUrlParam('accessToken');
+
+			if(accessToken == "" || accessToken == undefined || accessToken == null) {
+				mui.toast("系统跑路咯");
+
+			} else {
+
+			}
+
+			mui.ajax('/index.php/topapi', {
+				data: {
+					format: 'json',
+					v: 'v1',
+					//名称
+					method: 'shop.trade.detail',
+					//accessToken: '0551a8a681b377cb6bb2214e04734bd35247cd5d6aeff0154a8949e7e76f19c3',
+					accessToken: accessToken,
+					shop_id: 2,
+					tid: misys,
+
+				},
+
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+
+				success: function(data) {
+					if(data.errorcode != 0) {
+						// 出错
+						mui.toast(data.msg);
+
+					} else {
+
+						var logi = data.data.logi;
+
+						var trade = data.data.trade;
+
+						var tracking = data.data.tracking;
+
+						var information = '<div class="dingdanxiangq" style="position: relative;width: 2rem;height: 3rem;float: left;">'
+						information += '<div class="pht-xq" style="position: absolute;left: 0;top: 0;right: 0;bottom: 0;">'
+
+						information += '	<img src="image/dingdan.png" alt="" style="display: block;width: 85%;height: 80%; margin-top: 2.5rem;margin-left: 0.8rem;"/>'
+						information += '</div>'
+						information += '</div>'
+
+						information += '<ul class="order-xq" style="background-color: white;margin-top: 0;">'
+
+						information += '<li class="mui-table-view-cell">'
+
+						information += '	<a href="javascript:void(0);" class="mui-navigate-right">'
+
+						information += '	<div class="dd-xq">'
+						information += '	<p>订单号:<span>' + trade.tid + '</span></p>'
+						information += '	</div>'
+
+						information += '<p style="text-align: right;margin-right: 20px;">' + trade.status_depict + '</p>'
+
+						information += '<div class="titme-xq">'
+						information += '<p>创建时间:<span>' + trade.created_time + '</span></p>'
+						information += '</div>'
+
+						information += '	</a>'
+						information += '</li>'
+						information += '	</ul>';
+
+						$(".shop-xq").append(information);
+						//拼接收件信息
+						//判断 如果为线下自提的 时候 显示不同的页面
+						if(trade.shipping_type !== "xxziti") {
+
+							var receiving = '<div class="dizhixinxi" style="position: relative;width: 2rem;height: 3rem;float: left;">'
+							receiving += '	<div class="goodsreceipt-xq"style="position: absolute;left: 0;top: 0;right: 0;bottom: 0;">'
+
+							receiving += '	<img src="image/dizhi.png" alt="" style="display: block;width: 85%;height: 80%; margin-top: 2rem;margin-left: 0.8rem;" />'
+							receiving += '</div>'
+							receiving += '</div>'
+
+							receiving += '	<ul class="goodsreceipt-xq" style="background-color: white;margin-top: 0;">'
+
+							receiving += '<li class="mui-table-view-cell">'
+
+							receiving += '	<a href="javascript:void(0);" class="mui-navigate-right">'
+
+							receiving += '	<div class="goodsreceipt-xq">'
+							receiving += '	<p>收件人:<span>' + trade.receiver_name + '</span><span style="margin-left: 4rem;">' + trade.receiver_mobile + '</span></p>'
+							receiving += '	</div>'
+
+							receiving += '<div class="goodsreceipt-xq">'
+							receiving += '	<p>收货地址:<span>' + trade.receiver_state + trade.receiver_city + trade.receiver_address + trade.receiver_district + '</span></p>'
+							receiving += '	</div>'
+
+							receiving += '	</a>'
+							receiving += '	</li>'
+							receiving += '</ul> ';
+						} else {
+							var receiving = '<div class="dizhixinxi" style="position: relative;width: 2rem;height: 3rem;float: left;">'
+							receiving += '	<div class="goodsreceipt-xq" style="position: absolute;left: 0;top: 0;right: 0;bottom: 0;">'
+
+							receiving += '	<img src="image/dizhi.png" alt="" style="display: block;width: 80%;height: 70%;margin-left: 0.8rem;margin-top: 0.3rem;" />'
+							receiving += '</div>'
+							receiving += '</div>'
+
+							receiving += '	<ul class="goodsreceipt-xq" style="background-color: white;margin-top: 0;">'
+
+							receiving += '	<li class="mui-table-view-cell">'
+							receiving += '	<p>线下自提</p>'
+							receiving += '	</li>'
+							receiving += '	</ul>';
+						}
+						$(".goodsreceipt").append(receiving);
+
+						//获取商品详细信息
+						var orders = trade.orders;
+						for(var l in orders) {
+							var detailed = orders[l];
+
+							var details = '<li class="mui-table-view-cell">'
+							details += '	<a href="" class="mui-navigate-right">'
+							details += '<div class="shopex-table">'
+							details += '<div class="shopex-table-cell shopex-col-xs-8 checkout-goods-list">'
+
+							details += '	<div class="thumbnail">'
+							details += '	<div class="thumb-img">'
+							details += '		<img src="http://www.jinyisoubu.com' + detailed.pic_path + '"alt="" style="width: 6rem;height: 6rem;">'
+							details += '	</div>'
+
+							details += '	</div>'
+
+							details += '	<div class="fabrwenzi">'
+							details += '	<h6 style="color:#000000;white-space:normal; width:260px;margin-left: -3rem;">' + detailed.title + '</h6>'
+
+							details += '		<span style="font-size: 12px;color:#ccc;white-space:normal; width:140px;display: inline-block;">' + detailed.spec_nature_info + '</span>'
+							details += '	<p style="color: red;">¥' + detailed.price + '/<i style="font-style:normal;">' + detailed.unit + '</i></p>'
+
+							details += '	</div>'
+
+							details += '	</div>'
+
+							details += '	<div class="shopex-table-cell shopex-col-xs-2 " style="width: 1%;vertical-align: top;">'
+							details += '	<h6 style="margin-left: -3rem;margin-top: 0.8rem;">*' + detailed.num + '</h6>'
+
+							details += '	</div>'
+
+							details += '</div>'
+
+							details += '</a>'
+							details += '</li>';
+
+							$("#srore").append(details);
+
+						}
+
+						//合计部分页面
+
+						var total = '<div class="shopex-table" style="width: 100%;display: table;">'
+						total += '	<div class="shopex-table-cell " style="width: 50%;float: left;">'
+						total += '	</div>'
+						total += '<div class="shopex-table-cell " style="width: 50%;float: right;">'
+						total += '<dl class="checkout-fee">'
+						total += '	<dt style="  float: left;font-size: 0.7rem;color: #999;">合计：</dt>'
+						total += '	<dd class="op-total total" style="text-align: right;color: red;font-size: 12px;">￥' + trade.payment + '</dd>'
+						total += '	<dt style="  float: left;font-size: 0.7rem;color: #999;">积分抵扣：</dt>'
+						total += '<dd class="op-post" style="text-align: right;font-size: 12px;">￥0.00</dd>'
+						total += '<dt style="  float: left;font-size: 0.7rem;color: #999;">减免：</dt>'
+						total += '	<dd class="op-discount" style="text-align: right;font-size: 12px;">￥0.00</dd>'
+						total += '	<dt style="  float: left;font-size: 0.7rem;color: #999;">运费：</dt>'
+						total += '	<dd class="op-post" style="text-align: right;font-size: 12px;">￥0.00</dd>'
+
+						total += '	</dl>'
+						total += '</div>'
+						total += '</div>'
+
+						$(".xinxi-zhanshi").append(total);
+
+						//获取到我们企业发票
+						var invoice = trade.invoice_vat_main;
+
+						//判断个人 还是企业  个人 如果不要发票 发票信息不显示
+						if(trade.need_invoice) {
+							if(trade.invoice_name == "individual") {
+								var fp = '<div style="height: 30px;" id="fapiao">'
+
+								fp += ' <div class="peisong" style="float: left;width: 75%;line-height: 30px;font-size: 16px;">发票信息</div>'
+
+								fp += ' <div class="kuaidi" id="op_invoice_name" style="float: right;width: 25%;line-height: 30px;font-size: 14px;font-weight: 600;">个人(明细)</div>'
+
+								fp += '  </div>';
+							} else {
+								var fp = '<div style="height: 170px;" >'
+
+								fp += '  <div class="peisong" style="float: left;width: 75%;line-height: 30px;font-size: 16px;">发票信息</div>'
+
+								fp += '  <div class="kuaidi" id="op_invoice_name" style="float: right;width: 25%;line-height: 30px;font-size: 14px;font-weight: 600;">企业发票</div>'
+								fp += '  <div style="font-size: 14px;color:#999;margin-left: 2rem;">公司名称：<span>' + invoice.company_name + '</span></div>'
+								fp += '  <div style="font-size: 14px;color:#999;margin-left: 2rem;">纳税人识别号：<span>' + invoice.registration_number + '</span></div>'
+								fp += ' <div style="font-size: 14px;color:#999;margin-left: 2rem;">公司地址：<span>' + invoice.company_address + '</span></div>'
+								fp += '  <div style="font-size: 14px;color:#999;margin-left: 2rem;">电话：<span>' + invoice.company_phone + '</span></div>'
+								fp += '  <div style="font-size: 14px;color:#999;margin-left: 2rem;">开户行：<span>' + invoice.bankname + '</span></div>'
+								fp += ' <div style="font-size: 14px;color:#999;margin-left: 2rem;">开户账号：<span>' + invoice.bankaccount + '</span></div>'
+								fp += '  </div>';
+							}
+
+						} else {
+							var fp = '<div style="height: 30px;" id="fapiao">'
+
+							fp += ' <div class="peisong" style="float: left;width: 75%;line-height: 30px;font-size: 16px;">发票信息</div>'
+
+							fp += ' <div class="kuaidi" id="op_invoice_name" style="float: right;width: 25%;line-height: 30px;font-size: 14px;font-weight: 600;">没有发票</div>'
+
+							fp += '  </div>';
+						}
+
+						$("#fapiao").append(fp);
+
+						//获取物流信息
+						//如果为真 显示物流信息
+						if(logi) {
+							var wul = '<div class="peisong" style="width: 75%;line-height: 30px;font-size: 16px;">配送信息</div>'
+
+							wul += '<div style="font-size: 14px;color:#999;margin-left: 2rem;">物流公司：<span>' + logi.logi_name + '</span></div>'
+							wul += '<div style="font-size: 14px;color:#999;margin-left: 2rem;">配送单号：<span>' + logi.delivery_id + '</span></div>';
+
+						} else {
+							var wul = '<div class="peisong" style="width: 75%;line-height: 30px;font-size: 16px;">配送信息</div>'
+
+							wul += '<div style="font-size: 14px;color:#999;margin-left: 2rem;">物流公司：<span></span></div>'
+							wul += '<div style="font-size: 14px;color:#999;margin-left: 2rem;">配送单号：<span></span></div>';
+						}
+
+						$(".wulx").append(wul);
+
+						//在待收货  已完成 已取消 退货中  不显示发货和 取消订单
+						if(trade.status == "WAIT_BUYER_CONFIRM_GOODS" || trade.status == "TRADE_FINISHED" || trade.status == "TRADE_CLOSED_BY_SYSTEM") {
+
+						} else if(trade.status == "WAIT_SELLER_SEND_GOODS") {
+							var qx = '<button type="button" style="height: 40px;" id="cancellation"  ontouchstart="quxiao(this,' + misys + ')">取消订单</button>'
+							qx += '<button type="button" style="height: 40px;width: 80px;" "id="fahuo"  ontouchstart="fahuo(this,' + misys + ')">发货</button>';
+						} else {
+							var qx = '<button type="button" style="height: 40px;" id="cancellation"  ontouchstart="quxiao(this,' + misys + ')">取消订单</button>'
+						
+						}
+						$(".button-two").append(qx);
+
+					}
+				},
+				error: function(res) {
+					mui.toast("网络出错,请重试");
+				},
+
+			});
+		</script>
+
+		<script type="text/javascript">
+			//点击显示 
+
+			//取消订单传参
+			function quxiao(e, we) {
+				mui.openWindow({
+					url: 'cancelorder.html?quxiao=' + we + '&accessToken=' + accessToken,
+
+					id: 'cancelorder.html'
+
+				});
+			};
+
+			//发货订单传参
+			function fahuo(i, omg) {
+				mui.openWindow({
+					url: 'goods.html?fh=' + omg + '&accessToken=' + accessToken,
+
+					id: 'goods.html'
+				})
+			}
+		</script>
+	</body>
+
+</html>

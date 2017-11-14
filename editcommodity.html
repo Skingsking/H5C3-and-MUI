@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>商品展示模块</title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style>
+			.mui-checkbox input[type=checkbox]:before,
+			.mui-radio input[type=radio]:before {
+				font-family: Muiicons;
+				font-size: 20px !important;
+				font-weight: 400;
+				line-height: 1;
+				text-decoration: none;
+				color: #aaa;
+				border-radius: 0;
+				background: 0 0;
+				-webkit-font-smoothing: antialiased;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #666;"></a>
+			<h1 class="mui-title">商品展示模块配置</h1>
+		</header>
+		<!--总页-->
+		<div class="mui-content">
+
+			<div class="mui-bar mui-bar-tab" style="height: 35px;">
+				<input type="button" value="保存" class="mui-title" style="background:white;color: #000;margin: 0;border: 1px solid #000000;left: 0px;width: 100%;" id="inp-bc">
+
+			</div>
+
+		</div>
+
+	</body>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript">
+		mui.init();
+
+		//token值
+		function getUrlParam(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r != null) {
+				return unescape(r[2]);
+
+			} else {
+				return null;
+			}
+		}
+		//获取url传入的值
+		var accessToken = getUrlParam('accessToken');
+		if(accessToken == "" || accessToken == undefined || accessToken == null) {
+			mui.toast("系统跑路咯");
+
+		} else {
+
+		}
+
+		//定义 widgets_id 值
+		var widgets_id = null;
+		//页面进来    获取数据
+		mui.ajax('/index.php/topapi', {
+
+			data: {
+				format: 'json',
+				v: 'v1',
+				//名称
+				method: 'shop.shop.navcatlist',
+				//accessToken: '0551a8a681b377cb6bb2214e04734bd35247cd5d6aeff0154a8949e7e76f19c3',
+				accessToken: accessToken,
+				shop_id: 2,
+
+			},
+
+			dataType: 'json', //服务器返回json格式数据
+			type: 'post', //HTTP请求类型
+
+			success: function(data) {
+				if(data.errorcode != 0) {
+					// 出错
+					mui.toast(data.msg);
+
+				} else {
+					// 正常
+					var data = data.data;
+					if(data.cat.length > 0) {
+						//循环遍历数据
+						for(var i = 0; i < data.cat.length; i++) {
+							var cat = data.cat[i];
+
+							var order_sor = cat.order_sort; //order_sor 的值
+
+							var catId = cat.cat_id; //ID	
+
+							var catName = cat.cat_name; //NAME
+
+							// 获取 select
+							var selects = cat.select; //获取到 select 是否为true true为勾选 false为没有勾选
+
+							//证明点击过
+							if(selects == true) {
+								//checked  预先选定复选框或单选按钮。
+								//添加 默认为false
+								$('.mui-content').append('<div class="mui-input-row mui-checkbox  mui-left" style="background-color: white;border-bottom: 1px solid #ccc;">' +
+									'<label style="font-size: 14px;color: #777;" class="cat_' + catId + '">' + catName + '</label>' +
+									'<input name="check" value="' + catId + '/' + order_sor + '"  type="checkbox"  checked=true  style="top: 8px;" >' +
+									'</div>'
+								);
+							} else {
+								$('.mui-content').append('<div class="mui-input-row mui-checkbox  mui-left" style="background-color: white;border-bottom: 1px solid #ccc;">' +
+									'<label style="font-size: 14px;color: #777;" class="cat_' + catId + '">' + catName + '</label>' +
+									'<input name="check" value="' + catId + '/' + order_sor + '"  type="checkbox"   style="top: 8px;" >' +
+									'</div>'
+								);
+							}
+
+							//获取 widgets-id
+							var widgets = data.widgets_id;
+							widgets_id = widgets;
+
+						}
+					}
+
+				}
+
+			},
+			error: function(res) {
+				mui.toast("网络出错,请重试");
+			},
+
+		});
+
+		//点击保存时候的请求 
+		document.getElementById('inp-bc').addEventListener('tap', function() {
+			//在这里获取data
+			var checkID = []; //定义一个空数组
+
+			$("input[name='check']:checked").each(function(i) { //把所有被选中的复选框的值存入数组
+				//获取当前name值 也就是value值
+				var miss = $(this).val();
+				var l = {};
+				var a = miss.split('/');
+				l.cat_id = a[0];
+				l.order_sort = a[1];
+				checkID[i] = l;
+
+			});
+
+			mui.ajax('/index.php/topapi', {
+				data: {
+					format: 'json',
+					v: 'v1',
+					//名称
+					method: 'shop.shop.navsave',
+					//accessToken: '0551a8a681b377cb6bb2214e04734bd35247cd5d6aeff0154a8949e7e76f19c3',
+					accessToken: accessToken,
+					shop_id: 2,
+					data: JSON.stringify(checkID),
+					widgets_id: widgets_id,
+
+				},
+
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+
+				success: function(data) {
+					if(data.errorcode != 0) {
+						// 出错
+						mui.toast(data.msg);
+
+					} else {
+						// 正常 返回上一页
+						window.history.back(-1);
+
+					}
+				},
+				error: function(res) {
+					mui.toast("网络出错,请重试");
+				},
+
+			});
+
+		});
+	</script>
+
+</html>
