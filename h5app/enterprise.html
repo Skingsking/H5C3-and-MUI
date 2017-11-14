@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>企业开店</title>
+
+		<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, user-scalable=0, width=device-width" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="telephone=no" name="format-detection">
+
+		<link rel="stylesheet" href="css/mui.css">
+		<!--提示框样式-->
+		<link rel="stylesheet" type="text/css" href="css/validate.css">
+		<link rel="stylesheet" href="css/mui.picker.css">
+
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+		</style>
+		<script src="js/jquery.min.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style='height: 35px;background: #BBBBBB;'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id='fanhuianqi' style='color:#777;bottom: 5px;'></a>
+			<h1 id="title12" class="mui-title" style='line-height: 35px;font-size: 16px;'>申请企业店铺</h1>
+		</header>
+		<header class="mui-bar mui-bar-nav" style='height: 35px;margin-top: 35px;background: #eee;'>
+			<h2 id="title2" class="mui-title" style='line-height: 35px;font-size: 15px;'>基本信息</h2>
+		</header>
+		<div id='gerend' class='mui-content '>
+			<form class="mui-input-group" class='mui-scroll-wrapper' id='form2'>
+				<!--代表链接-->
+				<input type="hidden" name="enterapply_id" value="">
+				<!--代表企业-->
+				<input type="hidden" name="user_type" value="1">
+				<!--企业自营-->
+				<input type="hidden" name="shop_type" value="store">
+
+				<div class="mui-input-row" style='margin-top: 27px;'>
+					<label>公司名称
+			        	<span style='color: red;'>*</span>
+			        </label>
+					<input type="text" class="mui-input-clear" name="company_name" placeholder="请输入" style='font-size: 15px;' data-required="true" data-descriptions="corporatename">
+				</div>
+
+				<div class="mui-input-row">
+					<label>成立日期</label>
+					<input type="date" class="mui-input-clear" style='font-size: 15px;' name="shop_info[establish_date]" data-required="true" data-descriptions="datariqi" />
+				</div>
+
+				<div class="mui-input-row">
+					<label>法人姓名</label>
+					<input type="text" class="mui-input-clear" placeholder="请输入" name="shop_info[representative]" style='font-size: 15px;' data-required="true" data-descriptions="farenname">
+				</div>
+
+				<div class="mui-input-row">
+					<label style='width: 49%;'>法人身份证号</label>
+					<input type="text" class="mui-input-clear" placeholder="请输入" name="shop_info[corporate_identity]" style='font-size: 15px;width: 51%;' data-validate="shenfen" data-describedby="shenfen-description">
+				</div>
+
+				<div class="mui-input-row" id='currname'>
+					<label style='width: 55%;'>法人身份证正面照<span style='color: red;'>*</span></label>
+					<input type="hidden" name="shop_info[corporate_identity_img_z]" id="img_z" value="" data-required="true" data-descriptions="zhengmian" /> 　 <img src='images/pz.png' id="headImage3" class="my_img_class " name="" style='width: 40px;height: 40px;display: inline-block; background: #007AFF;' alt='请上传'>
+				</div>
+
+				<div class="mui-input-row" id='currname'>
+					<label style='width: 55%;'>法人身份证反面照<span style='color: red;'>*</span></label>
+					<input type="hidden" name="shop_info[corporate_identity_img_f]" id="img_f" value="" data-required="true" data-descriptions="fanmian" /> 　 <img src='images/pz.png' id="headImage4" class="my_img_class " name="" style='width: 40px;height: 40px;display: inline-block; background: #007AFF;' alt='请上传'>
+				</div>
+
+				<div class="mui-input-row" id='currname'>
+					<label style='width: 55%;'>营业执照副本照片<span style='color: red;'>*</span></label>
+					<input type="hidden" name="shop_info[license_img]" id="yez" value="" data-required="true" data-descriptions="yingye" /> 　 <img src='images/pz.png' id="headImage5" class="my_img_class " name="" src='' style='width: 40px;height: 40px;display: inline-block; background: #007AFF;' alt='请上传'>
+				</div>
+
+				<div class="mui-input-row">
+					<label style='width: 42%;'>营业执照号</label>
+					<input type="text" class="mui-input-clear" placeholder="请输入" name="shop_info[license_num]" style='font-size: 15px;width: 58%;' data-required="true" data-descriptions="yingyehao">
+				</div>
+
+				<div class="mui-input-row">
+					<h1 class="mui-title" style='background: #eee;margin: 0;line-height: 35px;font-size: 15px;'>结算账号</h1>
+				</div>
+
+				<div class="mui-input-row">
+					<label>开户名<span style='color: red;'>*</span></label>
+					<input type="text" class="mui-input-clear" placeholder="请输入" name="shop_info[bank_user_name]" style='font-size: 15px;' data-required="true" data-descriptions="kaihuname">
+				</div>
+
+				<div class="mui-input-row">
+					<label>银行账户<span style='color: red;'>*</span></label>
+					<input type="text" class="mui-input-clear" placeholder="请输入" name="shop_info[bankID]" style='font-size: 15px;' data-required="true" data-descriptions="yinhangz">
+				</div>
+
+				<div class="mui-input-row">
+					<label>开户银行<span style='color: red;'>*</span></label>
+					<input type="text" class="mui-input-clear" placeholder="请输入" name="shop_info[bank_name]" style='font-size: 15px;' data-required="true" data-descriptions="kaihuz">
+				</div>
+
+				<div class="mui-input-row">
+					<label>开户支行<span style='color: red;'>*</span></label>
+					<input type="text" class="mui-input-clear" placeholder="请输入" name="shop_info[bank_bank]" style='font-size: 15px;' data-required="true" data-descriptions="kaihuzi">
+				</div>
+
+				<div class="mui-input-row">
+					<label style='width: 55%;'>开户银行所在地<span style='color: red;'>*</span></label>
+					<input type="text" class="mui-input-clear" placeholder="请输入" name="shop_info[bank_area]" style='font-size: 15px;width: 45%;' data-required="true" data-descriptions="kaihudi">
+				</div>
+
+				<div class="mui-input-row">
+					<h1 class="mui-title" style='background: #eee;margin: 0;line-height: 35px;font-size: 15px;'>店铺信息</h1>
+				</div>
+
+				<div class="mui-input-row" style='margin-top: 27px;'>
+					<label>店铺名称
+			        	<span style='color: red;'>*</span>
+			        </label>
+					<input type="text" class="mui-input-clear" name="shop_name" placeholder="请输入20个字之内" style='font-size: 15px;' data-required="true" data-descriptions="dianpuname">
+				</div>
+
+				<div class="mui-input-row">
+					<label>经营类目<span style='color: red;'>*</span></label>
+					<select multiple="true" type="checkbox" class="mui-input-clear" name="shop[shop_cat][]" placeholder="请选择" style="font-size: 15px;" data-required="true" data-descriptions="jyleimu">
+						<option value="">请选择</option>
+						<option value="406">面料</option>
+						<option value="717">辅料</option>
+					</select>
+				</div>
+
+				<div class="mui-input-row">
+					<label>经营范围<span style='color: red;'>*</span></label>
+					<input type="text" class="mui-input-clear" placeholder="请输入" name="shop[shop_descript]" style='font-size: 15px;' data-required="true" data-descriptions="fanwei">
+				</div>
+
+				<div class="mui-input-row">
+					<label style='width: 40%;'>店铺所在地<span style='color: red;'>*</span></label>
+					<input type="hidden" name="area" id="suozaidi" value="" />
+					<p class="mui-input-clear" id="city_texts" style='text-align: center;line-height: 40px;'>选择省市区</p>
+
+				</div>
+
+				<div class="mui-input-row">
+					<label>详细地址<span style='color: red;'>*</span></label>
+					<input type="text" class="mui-input-clear" placeholder="请输入" name="shop_info[company_addr]" style='font-size: 15px;' data-required="true" data-descriptions="dizhi">
+				</div>
+
+				<div class="mui-input-row" style='margin-top:2rem;margin-left:2rem;margin-right:2rem;'>
+					<input type="submit" value="申请入驻" class="mui-title" style='background: #eee;color: #000;margin: 0;' id='submit_btn'>
+				</div>
+
+			</form>
+
+		</div>
+
+	</body>
+
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery-mvalidate.js"></script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/picker.min.js"></script>
+	<script src="js/data.city.js"></script>
+	<script>
+		//token值
+		function getUrlParam(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r != null) {
+				return unescape(r[2]);
+
+			} else {
+				return null;
+			}
+		}
+		//获取url传入的值
+		var accessToken = getUrlParam('accessToken');
+		if(accessToken == "" || accessToken == undefined || accessToken == null) {
+			mui.toast("系统跑路咯");
+
+		} else {
+
+		}
+		//选择省市区
+		var city_pickerss = new mui.PopPicker({
+			layer: 3
+		});
+		city_pickerss.setData(init_city_picker);
+		$("#city_texts").on("tap", function() {
+			setTimeout(function() {
+				city_pickerss.show(function(items) {
+					var miss = $("#city_texts").html((items[0] || {}).text + " " + (items[1] || {}).text + " " + (items[2] || {}).text);
+					//获取 用户选中地址的信息
+
+					$("#suozaidi").val(miss.text());
+
+				});
+			}, 200);
+		});
+	</script>
+	<script>
+		// 点击上传触发正面
+		document.getElementById('headImage3').addEventListener('tap', function() {
+			var two = 3;
+			if(mui.os.plus) {
+				var a = [{
+					title: "拍照"
+				}, {
+					title: "从手机相册选择"
+				}];
+				plus.nativeUI.actionSheet({
+					//                  title: "修改用户头像", 
+					cancel: "取消",
+					buttons: a
+				}, function(b) { /*actionSheet 按钮点击事件*/
+					switch(b.index) {
+						case 0:
+							break;
+						case 1:
+							getImage(two); /*拍照*/
+							break;
+						case 2:
+							galleryImg(two); /*打开相册*/
+							break;
+						default:
+							break;
+					}
+				})
+			}
+		}, false);
+
+		// 点击上传触发反面
+		document.getElementById('headImage4').addEventListener('tap', function() {
+			var two = 4;
+			if(mui.os.plus) {
+				var a = [{
+					title: "拍照"
+				}, {
+					title: "从手机相册选择"
+				}];
+				plus.nativeUI.actionSheet({
+					//                  title: "修改用户头像", 
+					cancel: "取消",
+					buttons: a
+				}, function(b) { /*actionSheet 按钮点击事件*/
+					switch(b.index) {
+						case 0:
+							break;
+						case 1:
+							getImage(two); /*拍照*/
+							break;
+						case 2:
+							galleryImg(two); /*打开相册*/
+							break;
+						default:
+							break;
+					}
+				})
+			}
+		}, false);
+
+		// 点击上传营业执照
+		document.getElementById('headImage5').addEventListener('tap', function() {
+			var two = 5;
+			if(mui.os.plus) {
+				var a = [{
+					title: "拍照"
+				}, {
+					title: "从手机相册选择"
+				}];
+				plus.nativeUI.actionSheet({
+					//                  title: "修改用户头像", 
+					cancel: "取消",
+					buttons: a
+				}, function(b) { /*actionSheet 按钮点击事件*/
+					switch(b.index) {
+						case 0:
+							break;
+						case 1:
+							getImage(two); /*拍照*/
+							break;
+						case 2:
+							galleryImg(two); /*打开相册*/
+							break;
+						default:
+							break;
+					}
+				})
+			}
+		}, false);
+
+		//拍照 
+		function getImage(two) {
+			var c = plus.camera.getCamera();
+			c.captureImage(function(e) {
+				plus.io.resolveLocalFileSystemURL(e, function(entry) {
+					var s = entry.toLocalURL() + "?version=" + new Date().getTime();
+					uploadHead(s, two); /*上传图片*/
+				}, function(e) {
+					console.log("读取拍照文件错误：" + e.message);
+				});
+			}, function(s) {
+				console.log("error" + s);
+			}, {
+				filename: "_doc/head.png"
+			})
+		}
+
+		//本地相册选择 
+		function galleryImg(two) {
+			plus.gallery.pick(function(a) {
+				plus.io.resolveLocalFileSystemURL(a, function(entry) {
+					plus.io.resolveLocalFileSystemURL("_doc/", function(root) {
+						root.getFile("head.png", {}, function(file) {
+							//文件已存在 
+							file.remove(function() {
+								console.log("file remove success");
+								entry.copyTo(root, 'head.png', function(e) {
+										var e = e.fullPath + "?version=" + new Date().getTime();
+
+										uploadHead(e, two); /*上传图片*/
+										//变更大图预览的src 
+										//目前仅有一张图片，暂时如此处理，后续需要通过标准组件实现 
+									},
+									function(e) {
+										console.log('copy image fail:' + e.message);
+									});
+							}, function() {
+								console.log("delete image fail:" + e.message);
+							});
+						}, function() {
+							//文件不存在 
+							entry.copyTo(root, 'head.png', function(e) {
+									var path = e.fullPath + "?version=" + new Date().getTime();
+									uploadHead(path, two); /*上传图片*/
+								},
+								function(e) {
+									console.log('copy image fail:' + e.message);
+								});
+						});
+					}, function(e) {
+						console.log("get _www folder fail");
+					})
+				}, function(e) {
+					console.log("读取拍照文件错误：" + e.message);
+				});
+			}, function(a) {}, {
+				filter: "image"
+			})
+		};
+
+		//上传头像图片 
+		function uploadHead(imgPath, two) {
+			console.log("imgPath = " + imgPath);
+			document.getElementById('headImage' + two).setAttribute('alt', '上传成功');
+
+			var mainImage = document.getElementById("headImage" + two);
+
+			　　　　
+			mainImage.src = imgPath;
+
+			var image = new Image();
+			image.src = imgPath;
+			image.onload = function() {
+				var imgData = getBase64Image(image);
+				//              var imgData = imgData.replace(/^data:image\/(\w+);base64,/, '');
+				imgurl = '/images/50/08/92/2569924a3db41032b1755b64333972edf0767077.jpg';
+				if(two == 3) {
+					document.getElementById('img_z').value = imgurl;
+
+				} else if(two = 4) {
+					document.getElementById('img_f').value = imgurl;
+
+				} else if(two = 5) {
+					document.getElementById('yez').value = imgurl;
+				}
+				//             
+				//              /*在这里调用上传接口*/ 
+				var imgData = "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";
+				mui.ajax('/index.php/topapi', {
+					data: {
+						format: 'json',
+						v: 'v1',
+						//名称
+						method: 'image.appupload',
+						accessToken: accessToken,
+						upload_type: 'base64',
+						image: imgData,
+						image_input_title: '1.jpg',
+						form: 'appseller',
+						image_type: 'shop_apply',
+						//id: cookie.seller_id,
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 15000, //超时时间设置为10秒；				
+					success: function(data) {
+						if(data.errorcode != 0) {
+							// 出错
+							mui.toast(data.msg);
+						} else {
+							mui.toast(JSON.stringify(data));
+
+							var imgage_id = data.image_id;
+							var url = data.url;
+							var t_url = data.t_url;
+
+							if(two == 3) {
+								document.getElementById('img_z').value = data.image_id;
+
+							} else if(two = 4) {
+								document.getElementById('img_f').value = data.image_id;
+
+							} else if(two = 5) {
+								document.getElementById('yez').value = data.image_id;
+							}
+
+						}
+					},
+					error: function(res) {
+						mui.toast("网络出错,请重试");
+					},
+
+				});
+			}
+		}
+		//将图片压缩转成base64 
+		function getBase64Image(img) {
+			var canvas = document.createElement("canvas");
+			var width = img.width;
+			var height = img.height;
+			// calculate the width and height, constraining the proportions 
+			if(width > height) {
+				if(width > 100) {
+					height = Math.round(height *= 100 / width);
+					width = 100;
+				}
+			} else {
+				if(height > 100) {
+					width = Math.round(width *= 100 / height);
+					height = 100;
+				}
+			}
+			canvas.width = width; /*设置新的图片的宽度*/
+			canvas.height = height; /*设置新的图片的长度*/
+			var ctx = canvas.getContext("2d");
+			ctx.drawImage(img, 0, 0, width, height); /*绘图*/
+			var dataURL = canvas.toDataURL("image/*", 0.8);
+			return dataURL.replace("data:image/*;base64,", "");
+		}
+	</script>
+
+	<!--验证输入-->
+	<script>
+		imgurl = '/images/50/08/92/2569924a3db41032b1755b64333972edf0767077.jpg';
+		document.getElementById('img_z').value = imgurl;
+		document.getElementById('img_f').value = imgurl;
+		document.getElementById('yez').value = imgurl;
+		$(function() {
+			//企业正则	
+			$.mvalidateExtend({
+				shenfen: {
+					required: true,
+					pattern: /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/,
+					each: function() {},
+					descriptions: {
+						required: '<div class="field-invalidmsg">请输入身份证号</div>',
+						pattern: '<div class="field-invalidmsg">身份证号码格式不正确</div>',
+						valid: '<div class="field-validmsg">正确</div>'
+					}
+				}
+			});
+
+			$("#form2").mvalidate({
+				type: 1,
+				onKeyup: true,
+				sendForm: false,
+				firstInvalidFocus: false,
+				valid: function(event, options) {
+					//点击提交按钮时,表单通过验证触发函数
+					//点击表单认证成功后 进入认证成功页面
+
+					//序列化form表单
+					var reDates = $('#form2').serializeArray();
+					data = reDates;
+
+					//这里的ajax url为固定
+					mui.ajax('/index.php/topapi', {
+
+						data: {
+							format: 'json',
+							v: 'v1',
+							//名称
+							method: 'shop.shop.saveApply',
+							accessToken: cookie.accessToken,
+							data: JSON.stringify(data),
+							//sellerId: cookie.seller_id
+
+						},
+
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；				
+						success: function(data) {
+							if(data.errorcode != 0) {
+								// 出错
+								mui.toast(data.msg);
+							} else {
+								// 正常
+								mui.openWindow({
+
+									url: 'certification.html?accessToken=' + accessToken,
+
+									id: 'certification.html',
+
+								});
+							}
+
+						},
+						error: function(res) {
+							mui.toast("网络出错,请重试");
+						},
+
+					});
+
+				},
+
+				descriptions: {
+					corporatename: {
+						required: '请输入公司名称'
+					},
+
+					datariqi: {
+						required: '请输入成立日期'
+
+					},
+					jyleimu: {
+						required: '请输入经营类目'
+
+					},
+					farenname: {
+						required: '请输入法人姓名'
+					},
+					zhengmian: {
+						required: '请上传正面照'
+					},
+					fanmian: {
+						required: '请上传反面照'
+					},
+					yingye: {
+						required: '请上传营业照'
+					},
+
+					yingyehao: {
+						required: '请输入营业执照号'
+					},
+					kaihuname: {
+						required: '请输入开户名'
+					},
+					yinhangz: {
+						required: '请输入银行账户'
+					},
+					kaihuz: {
+						required: '请输入开户银行'
+					},
+					kaihuzi: {
+						required: '请输入开户支行'
+					},
+					kaihudi: {
+						required: '请输入银行所在地'
+					},
+					dianpuname: {
+						required: '请输入店铺名称'
+					},
+					fanwei: {
+						required: '请输入经营范围'
+					},
+					dizhi: {
+						required: '请输入详细地址'
+					},
+
+				}
+			});
+		})
+	</script>
+
+</html>
